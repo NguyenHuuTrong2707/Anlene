@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Header from '../../components/Header';
 import { useRouter } from 'expo-router';
 import ProgressStep from '../../components/ProgressBar';
 import ButtonCheckComponent from '../../components/ButtonCheckComponent';
 import ConfirmComponent from '../../components/ConfirmComponent';
+import PopupComponent from '../../components/PopupComponent';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import { LinearGradient } from 'expo-linear-gradient';
 interface Step {
     id: number;
     title: string;
@@ -24,6 +25,7 @@ const Test1_6_Co = () => {
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [borderStatus, setBorderStatus] = useState<boolean | null>(null);
     const [selectedButton, setSelectedButton] = useState<number | null>(null);
+    const [isModalVisible, setModalVisible] = useState<boolean>(false);
     const navigation = useNavigation();
     const router = useRouter();
 
@@ -97,7 +99,14 @@ const Test1_6_Co = () => {
             headerShown: false,
         });
     }, [navigation]);
+    // set sự kiện của popup 
+    const handleConfirm = () => {
+        setModalVisible(true);
+    };
 
+    const closeModal = () => {
+        setModalVisible(false);
+    };
     const isLastStep =
         currentStep === steps.length - 1 &&
         steps.every(step => step.status !== null);
@@ -105,104 +114,129 @@ const Test1_6_Co = () => {
     const buttonTitleHiem = currentStep === 3 ? 'Hiếm khi' : 'Được';
     const buttonTitleNhieuLan = currentStep === 3 ? 'Nhiều lần' : 'Không được';
     return (
-        <SafeAreaView style={styles.container}>
-            {/* Header */}
-            <Header
-                title="Trang 2/6"
-                showBackButton={true}
-                logo={require('../../assets/images/home_fill.png')}
-                backgroundColor="#2E7D32"
-                onBackPress={handleBack}
-                onGoHome={onGoHome}
-            />
-
-            {/* Progress Bar */}
-            <View style={styles.progressContainer}>
-                <ProgressStep steps={steps} currentStepIndex={currentStep} />
-            </View>
-
-
-            {/* Content */}
-            <View style={styles.content}>
-                <Text style={styles.title}>{stepContent[currentStep].title}</Text>
-
-                {/* Tạo border  */}
-                <View style={[
-                    styles.imageContainer,
-                    steps[currentStep].status === true ? styles.borderGreen : steps[currentStep].status === false ? styles.borderRed : null
-                ]}>
-                    <Image source={stepContent[currentStep].image} style={styles.image} />
+        <LinearGradient
+            colors={['#0E470E', '#20680D', '#2E820D', '#13500E']}
+            style={styles.gradientBackground}
+        >
+            <SafeAreaView style={styles.container}>
+                {/* Header */}
+                <Header
+                    title="Trang 2/6"
+                    showBackButton={true}
+                    logo={require('../../assets/images/home_fill.png')}
+                    backgroundColor="transparent"
+                    onBackPress={handleBack}
+                    onGoHome={onGoHome}
+                />
+                <View >
+                    <Text style={styles.titleHeader}>KIỂM TRA CƠ - XƯƠNG - KHỚP</Text>
                 </View>
-                {/* icon nằm ngoài image*/}
-                {steps[currentStep].status !== null && (
-                    <Image
-                        source={
-                            steps[currentStep].status === true
-                                ? require('../../assets/images/success.png')
-                                : require('../../assets/images/error.png')
-                        }
-                        style={styles.icon}
-                    />
+
+
+                {/* Progress Bar */}
+                <View style={styles.progressContainer}>
+                    <ProgressStep steps={steps} currentStepIndex={currentStep} />
+                </View>
+
+
+                {/* Content */}
+                <View style={styles.content}>
+                    <Text style={styles.title}>{stepContent[currentStep].title}</Text>
+
+                    {/* Tạo border  */}
+                    <View style={[
+                        styles.imageContainer,
+                        steps[currentStep].status === true ? styles.borderGreen : steps[currentStep].status === false ? styles.borderRed : null
+                    ]}>
+                        <Image source={stepContent[currentStep].image} style={styles.image} />
+                    </View>
+                    {/* icon nằm ngoài image*/}
+                    {steps[currentStep].status !== null && (
+                        <Image
+                            source={
+                                steps[currentStep].status === true
+                                    ? require('../../assets/images/success.png')
+                                    : require('../../assets/images/error.png')
+                            }
+                            style={styles.icon}
+                        />
+                    )}
+
+                    <Text style={styles.instructions}>{stepContent[currentStep].instructions}</Text>
+                    {/* Buttons */}
+                    <View style={styles.buttonsContainer}>
+                        <ButtonCheckComponent
+                            image={require('../../assets/images/duoc.png')}
+                            title={buttonTitleHiem}
+                            onPress={() => handleSelect(true, 1)}
+                            backgroundColor='#71A162'
+                            style={{
+                                borderColor: selectedButton === 1 ? '#FFC200' : 'transparent',
+                                borderWidth: selectedButton === 1 ? 1 : 0,
+                            }}
+                            imageStyle={{
+                                width: selectedButton === 1 ? 41.8 : 34.43,
+                                height: selectedButton === 1 ? 41.8 : 34.43,
+                                borderRadius: selectedButton === 1 ? 20 : 16,
+                            }}
+
+                        />
+                        <ButtonCheckComponent
+                            image={require('../../assets/images/khongduoc.png')}
+                            title={buttonTitleNhieuLan}
+                            onPress={() => handleSelect(false, 0)}
+                            backgroundColor='#71A162'
+                            style={{
+                                borderColor: selectedButton === 0 ? '#FFC200' : 'transparent',
+                                borderWidth: selectedButton === 0 ? 1 : 0,
+                            }}
+                            imageStyle={{
+                                width: selectedButton === 0 ? 41.8 : 34.43,
+                                height: selectedButton === 0 ? 41.8 : 34.43,
+                                borderRadius: selectedButton === 0 ? 20 : 16,
+                            }}
+                        />
+                    </View>
+                </View>
+
+                {/* Confirm Button */}
+                <ConfirmComponent
+                    title="XÁC NHẬN"
+                    onPress={handleConfirm}
+                    disabled={!isLastStep}
+                    style={[styles.confirmButton, isLastStep ? {} : styles.disabledButton]}
+                    textStyle={[styles.confirmText, !isLastStep && styles.disabledText]}
+                />
+
+                {isModalVisible && (
+                    <PopupComponent
+                        title="Xác nhận"
+                        message="Bạn đã tham gia bài kiểm tra sức khoẻ
+                            Hãy tiếp tục để có thể nhận kết quả
+                              kiểm tra sức khoẻ của bạn."
+                        onCancel={closeModal}
+                        onConfirm={() => {
+                            closeModal();
+                        }} visible={true} />
                 )}
 
-                <Text style={styles.instructions}>{stepContent[currentStep].instructions}</Text>
-                {/* Buttons */}
-                <View style={styles.buttonsContainer}>
-                    <ButtonCheckComponent
-                        image={require('../../assets/images/duoc.png')}
-                        title={buttonTitleHiem}
-                        onPress={() => handleSelect(true, 1)}
-                        backgroundColor='#71A162'
-                        style={{
-                            borderColor: selectedButton === 1 ? '#FFC200' : 'transparent',
-                            borderWidth: selectedButton === 1 ? 1 : 0,
-                        }}
-                        imageStyle={{
-                            width: selectedButton === 1 ? 41.8 : 34.43,
-                            height: selectedButton === 1 ? 41.8 : 34.43,
-                            borderRadius: selectedButton === 1 ? 20 : 16,
-                        }}
 
-                    />
-                    <ButtonCheckComponent
-                        image={require('../../assets/images/khongduoc.png')}
-                        title={buttonTitleNhieuLan}
-                        onPress={() => handleSelect(false, 0)}
-                        backgroundColor='#71A162'
-                        style={{
-                            borderColor: selectedButton === 0 ? '#FFC200' : 'transparent',
-                            borderWidth: selectedButton === 0 ? 1 : 0,
-                        }}
-                        imageStyle={{
-                            width: selectedButton === 0 ? 41.8 : 34.43,
-                            height: selectedButton === 0 ? 41.8 : 34.43,
-                            borderRadius: selectedButton === 0 ? 20 : 16,
-                        }}
-                    />
-                </View>
-            </View>
+                {/* Note */}
+                <Text style={styles.note}>
+                    *Lưu ý: Hãy dừng bài tập ngay nếu cảm thấy không thoải mái. Đảm bảo vị trí tập an toàn để không té ngã.
+                </Text>
+            </SafeAreaView>
+        </LinearGradient>
 
-            {/* Confirm Button */}
-            <ConfirmComponent
-                title="XÁC NHẬN"
-                onPress={() => { }}
-                disabled={!isLastStep}
-                style={[styles.confirmButton, isLastStep ? {} : styles.disabledButton]}
-                textStyle={[styles.confirmText, !isLastStep && styles.disabledText]}
-            />
-
-            {/* Note */}
-            <Text style={styles.note}>
-                Lưu ý: Hãy dừng bài tập ngay nếu cảm thấy không thoải mái. Đảm bảo vị trí tập an toàn để không té ngã.
-            </Text>
-        </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#2E7D32',
+    },
+    gradientBackground: {
+        flex: 1,
         paddingHorizontal: 16,
     },
     progressContainer: {
@@ -217,9 +251,16 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 18,
-        fontWeight: 'bold',
+        fontWeight: '700',
         color: '#FFF',
-        marginBottom: 16,
+        lineHeight: 27,
+
+    },
+    titleHeader: {
+        fontSize: 16,
+        fontWeight: '700',
+        color: '#FFF',
+        textAlign: 'center',
     },
     imageContainer: {
         width: 327,
@@ -234,10 +275,9 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
     },
-
     icon: {
         position: 'absolute',
-        top: 25,
+        top: 15,
         right: 15,
         width: 42,
         height: 42,
@@ -285,14 +325,11 @@ const styles = StyleSheet.create({
     buttonFail: {
         backgroundColor: '#EF5350',
     },
-    buttonText: {
-        fontSize: 14,
-        color: '#FFF',
-    },
     confirmButton: {
         backgroundColor: '#B70002',
         borderRadius: 24,
         alignSelf: 'center',
+        marginBottom: 10,
     },
     confirmText: {
         fontSize: 16,
@@ -301,10 +338,13 @@ const styles = StyleSheet.create({
         lineHeight: 21.92,
     },
     note: {
-        fontSize: 12,
+        fontSize: 10,
         color: '#FFF',
         textAlign: 'center',
         marginTop: 8,
+        fontWeight: 400,
+        fontStyle: 'italic',
+        lineHeight: 14,
     },
 });
 

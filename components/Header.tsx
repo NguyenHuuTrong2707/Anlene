@@ -6,6 +6,7 @@ interface HeaderProps {
     onBackPress?: () => void;
     showBackButton?: boolean;
     logo?: any;
+    iconStyle?: object;
     backgroundColor?: string; // Thêm thuộc tính màu nền
     onGoHome?: () => void;
 
@@ -16,6 +17,7 @@ const Header: React.FC<HeaderProps> = ({
     onBackPress,
     showBackButton = true,
     logo,
+    iconStyle,
     backgroundColor = '#004d00',
     onGoHome,
 }) => {
@@ -26,7 +28,7 @@ const Header: React.FC<HeaderProps> = ({
                 <TouchableOpacity onPress={onBackPress}>
                     <Image
                         source={require('../assets/images/vector_left.png')}
-                        style={styles.icon}
+                        style={[styles.icon, iconStyle]}
                     />
                 </TouchableOpacity>
             ) : (
@@ -66,7 +68,7 @@ const styles = StyleSheet.create({
 
     },
     icon: {
-        width: 32,
+        width: 60,
         height: 32,
         resizeMode: 'contain',
     },

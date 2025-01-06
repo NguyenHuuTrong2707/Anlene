@@ -5,7 +5,10 @@ interface ProgressStepProps {
     steps: { id: number; title: string; status: boolean | null }[]; // Mảng các bước với trạng thái
     currentStepIndex: number; // Chỉ số của bước hiện tại
 }
-
+interface ProgressStepProps {
+    steps: { id: number; title: string; status: boolean | null }[]; // Mảng các bước với trạng thái
+    currentStepIndex: number; // Chỉ số của bước hiện tại
+}
 const ProgressStep: React.FC<ProgressStepProps> = ({ steps, currentStepIndex }) => {
     return (
         <View style={styles.progressBarContainer}>
@@ -32,7 +35,7 @@ const ProgressStep: React.FC<ProgressStepProps> = ({ steps, currentStepIndex }) 
                             )}
                     </View>
                     {/* Tiêu đề dưới mỗi bước */}
-                    <Text style={styles.stepTitle}>{step.title}</Text>
+                    <Text numberOfLines={1} style={styles.stepTitle}>{step.title}</Text>
 
                     {/* Nối giữa các bước */}
                     {index < steps.length - 1 && (
@@ -40,6 +43,7 @@ const ProgressStep: React.FC<ProgressStepProps> = ({ steps, currentStepIndex }) 
                             style={[
                                 styles.connector,
                                 currentStepIndex > index ? styles.completedConnector : styles.pendingConnector,
+                                { top: 16 }, // Điều chỉnh vị trí để đường nối không đi qua vòng tròn
                             ]}
                         />
                     )}
@@ -72,7 +76,8 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         position: 'relative',
-        paddingHorizontal: 14,
+        width: 60,
+        paddingRight: 10,
     },
     stepIndicator: {
         width: 30,
@@ -96,10 +101,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     connector: {
-        width: 50,
+        width: 60,
         height: 2,
         position: 'absolute',
-        top: 15,
+        top: 16,
+        left: 40,
         zIndex: -1,
     },
     completedConnector: {
@@ -114,8 +120,8 @@ const styles = StyleSheet.create({
         marginTop: 5,
         textAlign: 'center',
         fontWeight: '500',
+        width: 90,
     },
-
 });
 
 export default ProgressStep;
