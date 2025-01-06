@@ -31,14 +31,14 @@ const WelcomeScreen = () => {
                     showBackButton={false}
                     logo={require('../../assets/images/logoAnlene.png')}
                     iconStyle={{ width: 60, height: 16 }}
-                    backgroundColor='#0E470E'
+                    backgroundColor='transparent'
                 />
 
                 <View style={styles.overlayContainer}>
                     <Image source={require('../../assets/images/banner.png')} style={styles.imageBanner} />
                     {/* Title and Subtitle */}
                     <LinearGradient
-                        colors={['#0E470E', '#1F660D', '#20680DE5', '#236E0DD9', '#27750DB2', '#2E820D00']}
+                        colors={['#13500E', '#1F660D', '#20680DE5', '#236E0DD9', '#27750DB2', '#2E820D00']}
                         style={styles.titleContainer}
                     >
                         <Text style={styles.title}>
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     title: {
-        color: '#FFF',
+        color: '#E1D770',
         fontSize: 22,
         fontWeight: '700',
         textAlign: 'center',
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         borderRadius: 30,
         width: 230,
-        borderColor: 'yellow',
+        borderColor: '#E1D770',
         borderWidth: 1.5,
         alignItems: 'center',
     },

@@ -1,5 +1,6 @@
 import { ActivityIndicator } from "react-native";
 import WelcomeScreen from "./screens/Welcome";
+import SubmitScreen from "./screens/SubmitScreen";
 import { useFonts } from 'expo-font';
 export default function Index() {
   const [fontsLoaded] = useFonts({

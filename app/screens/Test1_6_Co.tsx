@@ -28,7 +28,23 @@ const Test1_6_Co = () => {
     const [isModalVisible, setModalVisible] = useState<boolean>(false);
     const navigation = useNavigation();
     const router = useRouter();
-
+    // Khi quay lại màn hình, reset lại trạng thái của các bước
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            setSteps([
+                { id: 1, title: 'Cơ', status: null },
+                { id: 2, title: 'Xương', status: null },
+                { id: 3, title: 'Khớp', status: null },
+                { id: 4, title: 'Đề kháng', status: null },
+            ]);
+            setCurrentStep(0);
+            setSelectedButton(null);
+        });
+        // Dọn dẹp khi component bị hủy
+        return () => {
+            unsubscribe();
+        };
+    }, [navigation]);
     // Nội dung và hình ảnh tương ứng cho từng bước
     const stepContent = [
         {
@@ -52,6 +68,11 @@ const Test1_6_Co = () => {
             instructions: '6 tháng gần đây, bạn có gặp các triệu chứng: ho, sổ mũi, cảm sốt?',
         },
     ];
+    //Chuyển màn hình tiếp theo
+    const goToNext = () => {
+        closeModal();
+        router.push('/screens/SubmitScreen');
+    };
     // Cập nhật status và border 
     const handleSelect = (isSuccess: boolean, buttonId: number) => {
         setBorderStatus(isSuccess);
@@ -210,17 +231,17 @@ const Test1_6_Co = () => {
 
                 {isModalVisible && (
                     <PopupComponent
-                        title="Xác nhận"
+                        title="CẢM ƠN"
+                        cancelButton='Hủy'
+                        confirmButton='Tiếp tục'
                         message="Bạn đã tham gia bài kiểm tra sức khoẻ
                             Hãy tiếp tục để có thể nhận kết quả
                               kiểm tra sức khoẻ của bạn."
                         onCancel={closeModal}
                         onConfirm={() => {
-                            closeModal();
+                            goToNext();
                         }} visible={true} />
                 )}
-
-
                 {/* Note */}
                 <Text style={styles.note}>
                     *Lưu ý: Hãy dừng bài tập ngay nếu cảm thấy không thoải mái. Đảm bảo vị trí tập an toàn để không té ngã.
@@ -252,7 +273,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 18,
         fontWeight: '700',
-        color: '#FFF',
+        color: '#E1D770',
         lineHeight: 27,
 
     },

@@ -14,6 +14,8 @@ interface PopupComponentProps {
     message: string;
     onCancel: () => void;
     onConfirm: () => void;
+    cancelButton: string;
+    confirmButton: string;
 }
 
 const PopupComponent: React.FC<PopupComponentProps> = ({
@@ -22,6 +24,8 @@ const PopupComponent: React.FC<PopupComponentProps> = ({
     message,
     onCancel,
     onConfirm,
+    cancelButton,
+    confirmButton
 }) => {
     return (
         <Modal transparent visible={visible} animationType="fade">
@@ -34,14 +38,14 @@ const PopupComponent: React.FC<PopupComponentProps> = ({
                     <Text style={styles.message}>{message}</Text>
                     <View style={styles.buttonContainer}>
                         <ConfirmComponent
-                            title="Hủy"
+                            title={cancelButton}
                             onPress={onCancel}
                             style={[styles.button, styles.cancelButton]}
                             textStyle={styles.cancelText}
                             disabled={false}
                         />
                         <ConfirmComponent
-                            title="Xác nhận"
+                            title={confirmButton}
                             onPress={onConfirm}
                             style={[styles.button, styles.confirmButton]}
                             textStyle={styles.confirmText}
