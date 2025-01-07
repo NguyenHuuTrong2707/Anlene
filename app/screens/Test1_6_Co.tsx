@@ -71,7 +71,7 @@ const Test1_6_Co = () => {
     //Chuyển màn hình tiếp theo
     const goToNext = () => {
         closeModal();
-        router.push('/screens/SubmitScreen');
+        router.push('/screens/SubmitCareful');
     };
     // Cập nhật status và border 
     const handleSelect = (isSuccess: boolean, buttonId: number) => {

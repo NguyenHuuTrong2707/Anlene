@@ -1,10 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-
-interface ProgressStepProps {
-    steps: { id: number; title: string; status: boolean | null }[]; // Mảng các bước với trạng thái
-    currentStepIndex: number; // Chỉ số của bước hiện tại
-}
 interface ProgressStepProps {
     steps: { id: number; title: string; status: boolean | null }[]; // Mảng các bước với trạng thái
     currentStepIndex: number; // Chỉ số của bước hiện tại
