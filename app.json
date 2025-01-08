@@ -10,14 +10,12 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-       "bundleIdentifier": "com.altasofware.anlene"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.altasofware.anlene"
     },
     "web": {
       "bundler": "metro",
