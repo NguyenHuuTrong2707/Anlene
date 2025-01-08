@@ -71,7 +71,16 @@ const Test1_6_Co = () => {
     //Chuyển màn hình tiếp theo
     const goToNext = () => {
         closeModal();
-        router.push('/screens/SubmitCareful');
+        const falseCount = steps.filter(step => step.status === false).length;
+        const trueCount = steps.filter(step => step.status === true).length;
+    
+        if (falseCount === 3) {
+            router.push('/screens/SubmitCareful');
+        } else if (trueCount === 4) {
+            router.push('/screens/SubmitCongra');
+        } else if (falseCount === 1 || falseCount === 2) {
+            router.push('/screens/SubmitImportant');
+        }
     };
     // Cập nhật status và border 
     const handleSelect = (isSuccess: boolean, buttonId: number) => {
