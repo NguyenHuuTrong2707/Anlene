@@ -5,9 +5,10 @@ import {
     Modal,
     StyleSheet,
     TouchableWithoutFeedback,
+    Dimensions,
 } from 'react-native';
 import ConfirmComponent from '../components/ConfirmComponent';
-
+const { width } = Dimensions.get('window');
 interface PopupComponentProps {
     visible: boolean;
     title: string;
@@ -27,13 +28,14 @@ const PopupComponent: React.FC<PopupComponentProps> = ({
     cancelButton,
     confirmButton
 }) => {
+    const popupWidth = width * 0.8;
     return (
         <Modal transparent visible={visible} animationType="fade">
             <View style={styles.overlay}>
                 <TouchableWithoutFeedback onPress={onCancel}>
                     <View style={styles.background} />
                 </TouchableWithoutFeedback>
-                <View style={styles.popup}>
+                <View style={[styles.popup, {width : popupWidth}]}>
                     <Text style={styles.title}>{title}</Text>
                     <Text style={styles.message}>{message}</Text>
                     <View style={styles.buttonContainer}>
@@ -80,6 +82,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 4,
         elevation: 5,
+        paddingHorizontal: 10,
     },
     title: {
         fontSize: 24,

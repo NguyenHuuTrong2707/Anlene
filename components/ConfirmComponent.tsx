@@ -7,13 +7,20 @@ interface ConfirmComponentProps {
     disabled: boolean;
     style?: object;
     textStyle?: object;
+    onConfirmNavigate?: () => void;
 }
 
-const ConfirmComponent: React.FC<ConfirmComponentProps> = ({ title, onPress, disabled, style, textStyle }) => {
+const ConfirmComponent: React.FC<ConfirmComponentProps> = ({ title, onPress, disabled, style, textStyle,onConfirmNavigate }) => {
+    const handlePress = () => {
+        onPress();
+        if (onConfirmNavigate) {
+            onConfirmNavigate();  
+        }
+    };
     return (
         <TouchableOpacity
             style={[styles.confirmButton, disabled ? styles.disabledButton : {}, style]}
-            onPress={onPress}
+            onPress={handlePress}
             disabled={disabled}
         >
             <Text style={[styles.confirmText, disabled && styles.disabledText, textStyle]}>{title}</Text>

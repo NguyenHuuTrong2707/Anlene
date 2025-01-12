@@ -15,7 +15,7 @@ interface Step {
     status: boolean | null;
 }
 
-const Test1_6_Co = () => {
+const Page_2 = () => {
     const [steps, setSteps] = useState<Step[]>([
         { id: 1, title: 'Cơ', status: null },
         { id: 2, title: 'Xương', status: null },
@@ -378,4 +378,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Test1_6_Co;
+export default Page_2;

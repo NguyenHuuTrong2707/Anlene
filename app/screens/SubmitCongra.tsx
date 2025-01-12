@@ -1,7 +1,12 @@
 import React from 'react';
 import SubmitComponent from '../../components/SubmitComponent';
+import { useRouter } from 'expo-router';
 
 const SubmitCongra = () => {
+     const router = useRouter();
+        const handleNavigate = () => {
+            router.push('/screens/Page_2'); 
+        };
     return (
         <SubmitComponent
             backgroundColor="#20680D"
@@ -23,6 +28,7 @@ kết quả và nhận ngay Voucher ưu đãi lên đến 100.000đ từ Anlene.
             star={{
                 color: '#ECD24A',
             }}
+            onConfirmNavigate={handleNavigate}
         />
     );
 };

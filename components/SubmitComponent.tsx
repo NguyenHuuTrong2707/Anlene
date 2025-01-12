@@ -6,6 +6,10 @@ import Header from '../components/Header';
 import ConfirmComponent from '../components/ConfirmComponent';
 import PopupComponent from '../components/PopupComponent';
 
+import { getFirestore, addDoc, collection } from 'firebase/firestore';
+import { app } from '../firebase/firebase';
+
+const db = getFirestore(app);
 
 interface SubmitProps {
     backgroundColor: string
@@ -18,6 +22,7 @@ interface SubmitProps {
     textcolor?: object
     errortext?: object
     star?: object
+    onConfirmNavigate?: () => void;
 }
 const SubmitComponent: React.FC<SubmitProps> = ({
     backgroundColor,
@@ -29,15 +34,18 @@ const SubmitComponent: React.FC<SubmitProps> = ({
     titlecolor,
     textcolor,
     errortext,
-    star
+    star,
+    onConfirmNavigate
 
 }) => {
     const navigation = useNavigation();
     const [checked, setChecked] = useState(false);
     const [fullName, setFullName] = useState('');
-    const [isFullNameError, setIsFullNameError] = useState(false);
+    const [isFullNameError, setIsFullNameError] = useState<string>('');
     const [phone, setPhone] = useState('');
-    const [isPhoneError, setIsPhoneError] = useState(false);
+    const [email, setEmail] = useState('');
+    const [isPhoneError, setIsPhoneError] = useState<string>('');
+    const [isEmailError, setIsEmailError] = useState<string>('');
     const [isValidForm, setIsValidForm] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -67,40 +75,72 @@ const SubmitComponent: React.FC<SubmitProps> = ({
     }
     // Kiểm tra trường họ tên 
     const handleBlurFullName = () => {
-        // Kiểm tra nếu trường họ tên trống
-        if (fullName.trim() === '') {
-            setIsFullNameError(true);
-        } else {
-            setIsFullNameError(false);
-        }
+        setIsFullNameError('');
     };
     // Kiểm tra trường số điện thoại 
     const handleBlurPhone = () => {
-        // Kiểm tra nếu trường số điện thoại trống 
-        if (phone.trim() === '') {
-            setIsPhoneError(true);
+        const phoneRegex = /^[0-9]{10}$/;
+        if (!phoneRegex.test(phone) && phone.length > 0) {
+            setIsPhoneError('Số điện thoại không hợp lệ');
         } else {
-            setIsPhoneError(false);
+            setIsPhoneError('');
         }
     };
+    //Kiểm tra trường email
+    const handleBlurEmail = () => {
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(email) && email.length > 0) {
+            setIsEmailError('Email không hợp lệ');
+        } else {
+            setIsEmailError('');
+        }
+    }
+    const handleFocusPhone = () => {
+        if (fullName.trim() === '') {
+            setIsFullNameError('Vui lòng nhập họ tên');
+        }
+    }
     // Kiểm tra nếu người focus vào email khi chưa điền thông tin hai trường trên
     const handleFocusEmail = () => {
         if (fullName.trim() === '') {
-            setIsFullNameError(true);
+            setIsFullNameError('Vui lòng nhập họ tên');
         }
         if (phone.trim() === '') {
-            setIsPhoneError(true);
+            setIsPhoneError('Vui lòng nhập số điện thoại');
         }
     };
     // Kiểm tra các trường có rỗng không
     useEffect(() => {
         if (fullName.trim() !== '' && phone.trim() !== '' && checked) {
-            setIsValidForm(true);
+            if (isPhoneError !== '' || isEmailError !== '') {
+                setIsValidForm(false);
+            }
+            else {
+                setIsValidForm(true);
+            }
         } else {
             setIsValidForm(false);
         }
-    }, [fullName, phone, checked]);
-
+    }, [fullName, phone, checked, isPhoneError, isEmailError]);
+    //đẩy dữ liệu lên firestore
+    const handleConfirm = async () => {
+        if (isValidForm) {
+            try {
+                await addDoc(collection(db, 'users'), {
+                    fullName,
+                    phone,
+                    email,
+                });
+                console.log("thêm dữ liệu user vào firebase thành công!");
+                //chuyển đến màn hình tùy thuộc
+                if (onConfirmNavigate) {
+                    onConfirmNavigate();
+                }
+            } catch (error) {
+                console.error('Error adding document: ', error);
+            }
+        }
+    }
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <SafeAreaView style={[styles.container, { backgroundColor }]}>
@@ -131,7 +171,7 @@ const SubmitComponent: React.FC<SubmitProps> = ({
                                 value={fullName}
                                 onChangeText={(text) => setFullName(text)}
                                 onBlur={handleBlurFullName}
-                            />{isFullNameError && <Text style={[styles.errorText, errortext]}>Vui lòng nhập họ tên</Text>}</View>
+                            />{isFullNameError && <Text style={[styles.errorText, errortext]}>{isFullNameError}</Text>}</View>
                         {/* Số điện thoại */}
                         <View>
                             <Text style={styles.label}>Số điện thoại:<Text style={star}>*</Text></Text>
@@ -142,9 +182,10 @@ const SubmitComponent: React.FC<SubmitProps> = ({
                                 placeholderTextColor="#BABABA"
                                 value={phone}
                                 onChangeText={(text) => setPhone(text)}
+                                onFocus={handleFocusPhone}
                                 onBlur={handleBlurPhone}
                             />
-                            {isPhoneError && <Text style={[styles.errorText, errortext]}>Vui lòng nhập số điện thoại</Text>}
+                            {isPhoneError && <Text style={[styles.errorText, errortext]}>{isPhoneError}</Text>}
                         </View>
                         {/* Email */}
                         <View>
@@ -153,9 +194,13 @@ const SubmitComponent: React.FC<SubmitProps> = ({
                                 style={styles.input}
                                 placeholder='Nhập email'
                                 keyboardType='email-address'
+                                value={email}
+                                onChangeText={(text) => setEmail(text)}
                                 placeholderTextColor="#BABABA"
                                 onFocus={handleFocusEmail}
+                                onBlur={handleBlurEmail}
                             />
+                            {isEmailError && <Text style={[styles.errorText, errortext]}>{isEmailError}</Text>}
                         </View>
                     </View>
                     {/* Điều lệ */}
@@ -177,10 +222,11 @@ const SubmitComponent: React.FC<SubmitProps> = ({
                     <View style={styles.button}>
                         <ConfirmComponent
                             title="HOÀN THÀNH"
-                            onPress={() => { }}
+                            onPress={() => handleConfirm()}
                             disabled={!isValidForm}
                             style={[styles.confirmButton, isValidForm ? {} : styles.disabledButton]}
                             textStyle={[styles.confirmText, !isValidForm && styles.disabledText]}
+                            onConfirmNavigate={onConfirmNavigate}
                         />
                     </View>
                     {isModalVisible && (

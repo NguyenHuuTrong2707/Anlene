@@ -9,7 +9,7 @@ const WelcomeScreen = () => {
     const router = useRouter();
 
     const goToTest1 = () => {
-        router.push('/screens/Test1_6_Co');
+        router.push('/screens/Page_2');
     };
 
     const navigation = useNavigation();
