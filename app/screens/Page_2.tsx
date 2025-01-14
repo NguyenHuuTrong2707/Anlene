@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Header from '../../components/Header';
+import Header from '../components/Header';
 import { useRouter } from 'expo-router';
-import ProgressStep from '../../components/ProgressBar';
-import ButtonCheckComponent from '../../components/ButtonCheckComponent';
-import ConfirmComponent from '../../components/ConfirmComponent';
-import PopupComponent from '../../components/PopupComponent';
+import ProgressStep from '../components/ProgressBar';
+import ButtonCheckComponent from '../components/ButtonCheckComponent';
+import ConfirmComponent from '../components/ConfirmComponent';
+import PopupComponent from '../components/PopupComponent';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useDispatch } from "react-redux";

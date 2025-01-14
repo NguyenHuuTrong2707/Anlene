@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView, ImageBackground } from 'react-native';
-import Header from '../../components/Header';
+import Header from '../components/Header';
 import { useRouter } from 'expo-router';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -65,38 +65,10 @@ const WelcomeScreen = () => {
                         >
                             <View style={styles.infoBar}
                             >
-                                <LinearGradient style={styles.infoItem}
-                                    colors={['#FFC200', '#F1ED86', '#ECD24A', '#ECD24A', '#FFC200']}
-                                >
-                                    <ImageBackground
-                                        source={require('../../assets/images/vector1.png')}
-                                        style={[styles.imageBackground, { height: 45 }]}
-                                    >
-                                        <View style={styles.textContainer}>
-                                            <Text style={styles.infoText}>MIỄN</Text>
-                                            <Text style={styles.infoText}>PHÍ</Text>
-                                        </View>
-                                        <Image source={require('../../assets/images/vector2.png')} style={styles.checkmark} />
-                                    </ImageBackground>
-                                </LinearGradient>
-                                <LinearGradient style={styles.infoItem}
-                                    colors={['#FFC200', '#F1ED86', '#ECD24A', '#ECD24A', '#FFC200']}
-                                >
-                                    <Text style={[styles.infoText, { fontSize: 16, lineHeight: 16 }]}>Chỉ 5 phút</Text>
-                                </LinearGradient>
-                                <LinearGradient style={styles.infoItem}
-                                    colors={['#FFC200', '#F1ED86', '#ECD24A', '#ECD24A', '#FFC200']}
-                                >
-                                    <ImageBackground
-                                        source={require('../../assets/images/vectorvoucher.png')}
-                                        style={[styles.imageBackground, { height: 35 }]}
-                                    >
-                                        <View style={[styles.infotextContainer]}>
-                                            <Text style={[styles.infoText, { fontSize: 8 }]}>Voucher</Text>
-                                            <Text style={[styles.infoText, { fontSize: 16 }]}>100K</Text>
-                                        </View>
-                                    </ImageBackground>
-                                </LinearGradient>
+                               <Image source={require('../../assets/images/wfree.png')} style={styles.infoItem} />
+                               <Image source={require('../../assets/images/w5.png')} style={styles.infoItem} />
+                               <Image source={require('../../assets/images/wvoucher.png')} style={styles.infoItem} />
+                            
                             </View>
                             {/* Footer */}
                             <View style={styles.footerContainer}>
@@ -142,17 +114,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    // inforContainer: {
-    //     paddingHorizontal: 25,
-    //     position: 'absolute',
-    //     bottom: 0,
-    //     left: 0,
-    //     right: 0,
-    //     zIndex: 2,
-    //     height: '30%',
-    //     justifyContent: 'flex-end',
-    // },
-   
     inforContainerGradient: {
         paddingHorizontal: 20,
         position: 'absolute',
@@ -171,7 +132,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
     },
     textContainer: {
-        flexDirection: 'column', // Sắp xếp nội dung thành cột
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -234,12 +195,8 @@ const styles = StyleSheet.create({
         fontFamily: 'SVN-Gotham',
     },
     infoItem: {
-        paddingHorizontal: 10,
         width: 86,
         height: 57,
-        borderRadius: 18,
-        borderColor: 'green',
-        borderWidth: 1.4,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',

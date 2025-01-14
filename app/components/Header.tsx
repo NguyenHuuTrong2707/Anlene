@@ -27,7 +27,7 @@ const Header: React.FC<HeaderProps> = ({
             {showBackButton ? (
                 <TouchableOpacity onPress={onBackPress}>
                     <Image
-                        source={require('../assets/images/vector_left.png')}
+                        source={require('../../assets/images/vector_left.png')}
                         style={[styles.icon, iconStyle]}
                     />
                 </TouchableOpacity>
@@ -37,12 +37,12 @@ const Header: React.FC<HeaderProps> = ({
 
             <View style={styles.titleContainer}>
                 <Image
-                    source={require('../assets/images/vector_left.png')} // Chèn vector bên trái
+                    source={require('../../assets/images/vector_left.png')} // Chèn vector bên trái
                     style={styles.vector}
                 />
                 <Text style={styles.title}>{title}</Text>
                 <Image
-                    source={require('../assets/images/vector_right.png')} // Chèn vector bên phải
+                    source={require('../../assets/images/vector_right.png')} // Chèn vector bên phải
                     style={styles.vector}
                 />
             </View>

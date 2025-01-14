@@ -13,9 +13,7 @@ interface ConfirmComponentProps {
 const ConfirmComponent: React.FC<ConfirmComponentProps> = ({ title, onPress, disabled, style, textStyle,onConfirmNavigate }) => {
     const handlePress = () => {
         onPress();
-        if (onConfirmNavigate) {
-            onConfirmNavigate();  
-        }
+        
     };
     return (
         <TouchableOpacity

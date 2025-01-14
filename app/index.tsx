@@ -1,8 +1,8 @@
-import { ActivityIndicator,  } from "react-native";
+import { ActivityIndicator} from "react-native";
 import { useFonts } from 'expo-font';
 import { useState } from 'react'; 
 import  Welcome  from '../app/screens/Welcome';
-import  Page_2  from '../app/screens/Page_2';
+
 
 export default function Index() {
   const [fontsLoaded] = useFonts({

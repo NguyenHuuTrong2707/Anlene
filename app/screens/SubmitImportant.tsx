@@ -1,38 +1,49 @@
 import React from 'react';
-import SubmitComponent from '../../components/SubmitComponent';
+import SubmitComponent from '../components/SubmitComponent';
 import { useRouter } from 'expo-router';
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { LinearGradient } from 'expo-linear-gradient';
+
 const SubmitYellow = () => {
     const warningMessage = useSelector((state: RootState) => state.warning.message);
-
+    //thuc hien cat chuoi phía sau từ nhé..
+    const truncateAfterNhe = (str: string) => {
+        const nheIndex = str.toLowerCase().indexOf("nhé");  
+        if (nheIndex === -1) return str;  
+        return str.substring(0, nheIndex + 3) + "..."; 
+    };
+    const truncatedWarningMessage: string = truncateAfterNhe(warningMessage);
     const router = useRouter();
     const handleNavigate = () => {
-        router.push('/screens/Page_2');
+        router.push('/screens/Page_4_Imfortant');
     };
     return (
-        <SubmitComponent
-            backgroundColor="#FEBF00"
-            logoSource={require('../../assets/images/logoAnlene.png')}
-            textRed="HOÀN THÀNH BÀI KIỂM TRA"
-            textTitle="LƯU Ý MỘT CHÚT!"
-            textDic={warningMessage}
-            textInfo="Điền thông tin bên dưới để xem đầy đủ
-kết quả và nhận ngay Voucher ưu đãi lên đến 100.000đ từ Anlene."
-            textcolor={{
-                color: '#376E48',
-            }}
-            titlecolor={{
-                color: '#376E48',
-            }}
-            errortext={{
-                color: '#376E48',
-            }}
-            star={{
-                color: '#376E48',
-            }}
-            onConfirmNavigate={handleNavigate}
-        />
+        <LinearGradient
+            colors={['#FD9500', '#FEBF00','#FB8402']}
+            style={{ flex: 1 }}
+        >
+            <SubmitComponent
+                logoSource={require('../../assets/images/logoAnlene.png')}
+                textRed="HOÀN THÀNH BÀI KIỂM TRA"
+                textTitle="LƯU Ý MỘT CHÚT!"
+                textDic={truncatedWarningMessage}
+                textInfo="Điền thông tin bên dưới để xem đầy đủ kết quả và nhận ngay Voucher ưu đãi lên đến 100.000đ từ Anlene."
+                textcolor={{
+                    color: '#376E48',
+                }}
+                titlecolor={{
+                    color: '#376E48',
+                }}
+                errortext={{
+                    color: '#376E48',
+                }}
+                star={{
+                    color: '#376E48',
+                }}
+                onConfirmNavigate={handleNavigate}
+            />
+        </LinearGradient>
     );
 };
 

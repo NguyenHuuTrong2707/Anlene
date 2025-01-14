@@ -7,12 +7,12 @@ import ConfirmComponent from '../components/ConfirmComponent';
 import PopupComponent from '../components/PopupComponent';
 
 import { getFirestore, addDoc, collection } from 'firebase/firestore';
-import { app } from '../firebase/firebase';
+import { app } from '../../firebase/firebase';
 
 const db = getFirestore(app);
 
 interface SubmitProps {
-    backgroundColor: string
+    backgroundColor?: string
     textRed: string
     textTitle: string
     textDic: string
@@ -58,7 +58,6 @@ const SubmitComponent: React.FC<SubmitProps> = ({
     //quay lại màn hình trước
     const handleBack = () => {
         setIsModalVisible(true);
-
     };
     //đóng model
     const closeModel = () => {
@@ -142,7 +141,7 @@ const SubmitComponent: React.FC<SubmitProps> = ({
                 <Header
                     title="Trang 3/6"
                     showBackButton={true}
-                    logo={require('../assets/images/home_fill.png')}
+                    logo={require('../../assets/images/home_fill.png')}
                     backgroundColor="transparent"
                     onBackPress={handleBack}
                     onGoHome={onGoHome}
@@ -204,7 +203,7 @@ const SubmitComponent: React.FC<SubmitProps> = ({
                             style={[styles.checkbox]}
                             onPress={() => setChecked(!checked)}
                         >
-                            {checked && <Image style={styles.checkboxTick} source={require('../assets/images/check.png')} />}
+                            {checked && <Image style={styles.checkboxTick} source={require('../../assets/images/check.png')} />}
                         </TouchableOpacity>
                         <Text style={styles.checkboxLabel}>Tôi đồng ý để Anlene Vietnam liên hệ trong bất kỳ chương trình quảng cáo sản phẩm hay khuyến mãi nào </Text>
                     </View>
@@ -245,7 +244,6 @@ const SubmitComponent: React.FC<SubmitProps> = ({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#969696',
     },
     gradientContainer: {
         flex: 1,

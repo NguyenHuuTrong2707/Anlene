@@ -19,12 +19,12 @@ const ProgressStep: React.FC<ProgressStepProps> = ({ steps, currentStepIndex }) 
                         ]}
                     >
                         {index === currentStepIndex && step.status === null ? ( // trạng thái chờ
-                            <Image source={require('../assets/images/pending.png')} style={[styles.stepImage]} />
+                            <Image source={require('../../assets/images/pending.png')} style={[styles.stepImage]} />
                         ) : step.status === true ? (
-                            <Image source={require('../assets/images/success.png')} style={styles.stepImage} />
+                            <Image source={require('../../assets/images/success.png')} style={styles.stepImage} />
                         ) :
                             step.status === false ? (
-                                <Image source={require('../assets/images/error.png')} style={styles.stepImage} />
+                                <Image source={require('../../assets/images/error.png')} style={styles.stepImage} />
                             ) : (
                                 <Text style={styles.stepIndicatorText}>{step.id}</Text> // Số bước
                             )}
