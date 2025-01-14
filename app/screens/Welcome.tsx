@@ -61,51 +61,59 @@ const WelcomeScreen = () => {
                         <Text style={styles.buttonText}>KIỂM TRA NGAY</Text>
                     </TouchableOpacity>
                     {/* Info bar */}
-                    <View
-                        style={styles.inforContainer}
+                    <LinearGradient
+                        colors={['#2E820D00', '#478449', '#236E0DD9', '#20680DE5', '#1F660D', '#13500E']}
+                        style={styles.inforContainerGradient}
                     >
-                        <View style={styles.infoBar}
+                        <View
+                            style={styles.inforContainer}
                         >
-                            <LinearGradient style={styles.infoItem}
-                                colors={['#FFC200', '#F1ED86', '#ECD24A', '#ECD24A', '#FFC200']}
+                            <View style={styles.infoBar}
                             >
-                                <ImageBackground
-                                    source={require('../../assets/images/vector1.png')}
-                                    style={styles.imageBackground}
+                                <LinearGradient style={styles.infoItem}
+                                    colors={['#FFC200', '#F1ED86', '#ECD24A', '#ECD24A', '#FFC200']}
                                 >
-                                    <Text style={styles.infoText}>MIỄN PHÍ</Text>
-                                    <Image source={require('../../assets/images/vector2.png')} style={styles.checkmark} />
-                                </ImageBackground>
-                            </LinearGradient>
-                            <LinearGradient style={styles.infoItem}
-                                colors={['#FFC200', '#F1ED86', '#ECD24A', '#ECD24A', '#FFC200']}
-                            >
-                                <Text style={[styles.infoText, { fontSize: 16, lineHeight: 16 }]}>Chỉ 5 phút</Text>
-                            </LinearGradient>
-                            <LinearGradient style={styles.infoItem}
-                                colors={['#FFC200', '#F1ED86', '#ECD24A', '#ECD24A', '#FFC200']}
-                            >
-                                <ImageBackground
-                                    source={require('../../assets/images/vectorvoucher.png')}
-                                    style={[styles.imageBackground, { height: 35 }]}
+                                    <ImageBackground
+                                        source={require('../../assets/images/vector1.png')}
+                                        style={[styles.imageBackground, { height: 45 }]}
+                                    >
+                                        <View style={styles.textContainer}>
+                                            <Text style={styles.infoText}>MIỄN</Text>
+                                            <Text style={styles.infoText}>PHÍ</Text>
+                                        </View>
+                                        <Image source={require('../../assets/images/vector2.png')} style={styles.checkmark} />
+                                    </ImageBackground>
+                                </LinearGradient>
+                                <LinearGradient style={styles.infoItem}
+                                    colors={['#FFC200', '#F1ED86', '#ECD24A', '#ECD24A', '#FFC200']}
                                 >
-                                    <View style={[styles.infotextContainer]}>
-                                        <Text style={[styles.infoText, { fontSize: 8 }]}>Voucher</Text>
-                                        <Text style={[styles.infoText, { fontSize: 16 }]}>100K</Text>
-                                    </View>
-                                </ImageBackground>
-                            </LinearGradient>
+                                    <Text style={[styles.infoText, { fontSize: 16, lineHeight: 16 }]}>Chỉ 5 phút</Text>
+                                </LinearGradient>
+                                <LinearGradient style={styles.infoItem}
+                                    colors={['#FFC200', '#F1ED86', '#ECD24A', '#ECD24A', '#FFC200']}
+                                >
+                                    <ImageBackground
+                                        source={require('../../assets/images/vectorvoucher.png')}
+                                        style={[styles.imageBackground, { height: 35 }]}
+                                    >
+                                        <View style={[styles.infotextContainer]}>
+                                            <Text style={[styles.infoText, { fontSize: 8 }]}>Voucher</Text>
+                                            <Text style={[styles.infoText, { fontSize: 16 }]}>100K</Text>
+                                        </View>
+                                    </ImageBackground>
+                                </LinearGradient>
+                            </View>
+                            {/* Footer */}
+                            <View style={styles.footerContainer}>
+                                <Text style={styles.footer}>
+                                    Bài kiểm tra Cơ, Xương, Khớp này được phát triển bởi đội ngũ Anlene
+                                </Text>
+                                <Text style={styles.footerSecond}>
+                                    Lưu ý: Bài kiểm tra không dành cho đối tượng đang bị chấn thương hoặc có bệnh lý về cơ, xương, khớp hoặc tiểu đường
+                                </Text>
+                            </View>
                         </View>
-                        {/* Footer */}
-                        <View style={styles.footerContainer}>
-                            <Text style={styles.footer}>
-                                Bài kiểm tra Cơ, Xương, Khớp này được phát triển bởi đội ngũ Anlene
-                            </Text>
-                            <Text style={styles.footerSecond}>
-                                Lưu ý: Bài kiểm tra không dành cho đối tượng đang bị chấn thương hoặc có bệnh lý về cơ, xương, khớp hoặc tiểu đường
-                            </Text>
-                        </View>
-                    </View>
+                    </LinearGradient>
                 </View>
             </SafeAreaView >
         </LinearGradient >
@@ -121,8 +129,8 @@ const styles = StyleSheet.create({
     },
     checkmark: {
         position: 'absolute',
-        top: 25,
-        left: 45,
+        top: 30,
+        left: 50,
         width: 20,
         height: 15,
         borderRadius: 1,
@@ -139,8 +147,19 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    inforContainer: {
-        paddingHorizontal: 25,
+    // inforContainer: {
+    //     paddingHorizontal: 25,
+    //     position: 'absolute',
+    //     bottom: 0,
+    //     left: 0,
+    //     right: 0,
+    //     zIndex: 2,
+    //     height: '30%',
+    //     justifyContent: 'flex-end',
+    // },
+   
+    inforContainerGradient: {
+        paddingHorizontal: 20,
         position: 'absolute',
         bottom: 0,
         left: 0,
@@ -148,6 +167,18 @@ const styles = StyleSheet.create({
         zIndex: 2,
         height: '30%',
         justifyContent: 'flex-end',
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        overflow: 'hidden',
+    },
+    inforContainer: {
+        flex: 1,
+        justifyContent: 'flex-end',
+    },
+    textContainer: {
+        flexDirection: 'column', // Sắp xếp nội dung thành cột
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     titleContainer: {
         paddingHorizontal: 25,
@@ -208,7 +239,7 @@ const styles = StyleSheet.create({
         fontFamily: 'SVN-Gotham',
     },
     infoItem: {
-        paddingHorizontal: 12,
+        paddingHorizontal: 10,
         width: 86,
         height: 57,
         borderRadius: 18,
@@ -233,13 +264,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         width: '100%',
-        paddingVertical: 8,
+        paddingVertical: 40,
         backgroundColor: 'transparent',
         position: 'absolute',
         bottom: 70,
-        left: 35,
-        marginBottom: 10,
-        paddingHorizontal: 25,
+        paddingHorizontal: 50,
     },
     footerContainer: {
         flexDirection: 'column',
@@ -262,6 +291,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         fontStyle: 'italic',
         fontWeight: '400',
+        paddingVertical: 20,
     },
 });
 

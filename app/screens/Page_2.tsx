@@ -69,19 +69,82 @@ const Page_2 = () => {
         },
     ];
     //Chuyển màn hình tiếp theo
+    //Kiểm tra các step falsefalse
+    const stepWarnings: { [key: number]: string } = {
+        1: "Cơ",
+        2: "Xương",
+        3: "Khớp",
+        4: "Đề kháng",
+    };
+
+    const stepFullWarnings: { [key: number]: string } = {
+        1: "Có vẻ bạn đang có đề kháng tốt và hệ vận động tương đối ổn, tuy nhiên bạn cần quan tâm đến hệ cơ hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+        2: "Có vẻ bạn đang có đề kháng tốt và hệ vận động tương đối ổn, tuy nhiên bạn cần quan tâm đến hệ xương hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+        3: "Có vẻ bạn đang có đề kháng tốt và hệ vận động tương đối ổn, tuy nhiên bạn cần quan tâm đến hệ khớp hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+        4: "Có vẻ bạn đang có hệ vận động tốt, tuy nhiên bạn cần quan tâm đến sức đề kháng hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+    };
+    // Các cảnh báo tùy thuộc vào số lượng và loại bước không đạt
+    const dynamicMessages: { [key: string]: string } = {
+        "Cơ,Xương": "Có vẻ bạn đang có sức đề kháng tốt nhưng bạn cần quan tâm đến hệ cơ, xương nhiều hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+        "Cơ,Khớp": "Có vẻ bạn đang có sức khỏe xương tốt nhưng cần chú ý đến tình trạng cơ và khớp hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+        "Cơ,Đề kháng": "Tuy rằng bạn đang có hệ vận động tương đối ổn, nhưng bạn cần quan tâm đến sức đề kháng hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+        "Cơ,Xương,Khớp": "Có vẻ bạn đang có sức đề kháng tốt nhưng cần quan tâm đến hệ vận động hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+        "Cơ,Khớp,Đề kháng": "Có vẻ bạn đang có vấn đề về vận động và hệ miễn dịch bạn cần chú ý đến sức khỏe hơn nhé hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+        "Cơ,Xương,Đề kháng": "Có vẻ bạn đang có vấn đề về vận động và hệ miễn dịch bạn cần chú ý đến sức khỏe hơn nhé hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+        "Cơ,Xương,Khớp,Đề kháng": "Có vẻ sức khỏe của bạn đang gặp vấn đề, vui lòng chú ý đến sức khỏe hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+        "Xương,Khớp": "Có vẻ bạn đang có sức đề kháng tốt nhưng cần quan tâm đến hệ vận động hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+        "Xương,Đề kháng": "Tuy rằng bạn đang có hệ vận động tương đối ổn, nhưng bạn cần quan tâm đến sức đề kháng hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+        "Xương,Khớp,Đề kháng": "Có vẻ bạn đang có vấn đề về vận động và hệ miễn dịch bạn cần chú ý đến sức khỏe hơn nhé hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+        "Khớp,Đề kháng": "Tuy rằng bạn đang có hệ vận động tương đối ổn, nhưng bạn cần quan tâm đến sức đề kháng hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+    };
+    const generateWarningMessage = (warnings: string[]): string => {
+        if (warnings.length === 1) {
+            // Trả về thông báo đầy đủ nếu chỉ có một bước
+            const singleWarning = warnings[0];
+            const stepId = Object.keys(stepWarnings).find(key => stepWarnings[+key] === singleWarning);
+            return stepFullWarnings[+stepId!];
+        }
+        const key = warnings.join(",");
+        return dynamicMessages[key];
+    };
     const goToNext = () => {
         closeModal();
-        const falseCount = steps.filter(step => step.status === false).length;
-        const trueCount = steps.filter(step => step.status === true).length;
+
+        // Tìm các bước kiểm tra có trạng thái 'false'
+        const falseSteps = steps.filter(step => step.status === false);
+
+        // Lấy các cảnh báo cho các bước không đạt
+        const warningMessages: string[] = [];
+        steps.forEach(step => {
+            if (!step.status) {
+                warningMessages.push(stepWarnings[step.id]);
+            }
+        });
     
-        if (falseCount === 3) {
+        // Tạo thông báo kết hợp từ các bước không đạt
+        const combinedWarningMessage = generateWarningMessage(warningMessages);
+    
+        // Hiển thị cảnh báo
+        if (combinedWarningMessage) {
+            console.log(combinedWarningMessage);
+        }
+
+
+
+
+        // Kiểm tra số lượng true/false để điều hướng màn hình
+        const falseCount = falseSteps.length;
+        const trueCount = steps.filter(step => step.status === true).length;
+
+        if (falseCount > 2) {
             router.push('/screens/SubmitCareful');
         } else if (trueCount === 4) {
             router.push('/screens/SubmitCongra');
-        } else if (falseCount === 1 || falseCount === 2) {
+        } else if (falseCount >= 1 || falseCount <= 2) {
             router.push('/screens/SubmitImportant');
         }
     };
+
     // Cập nhật status và border 
     const handleSelect = (isSuccess: boolean, buttonId: number) => {
         setBorderStatus(isSuccess);
@@ -359,7 +422,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#B70002',
         borderRadius: 24,
         alignSelf: 'center',
-        marginBottom: 10,
     },
     confirmText: {
         fontSize: 16,
@@ -368,13 +430,13 @@ const styles = StyleSheet.create({
         lineHeight: 21.92,
     },
     note: {
-        fontSize: 10,
+        fontSize: 12,
         color: '#FFF',
         textAlign: 'center',
-        marginTop: 8,
         fontWeight: 400,
         fontStyle: 'italic',
         lineHeight: 14,
+        paddingVertical: 20,
     },
 });
 

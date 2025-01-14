@@ -28,7 +28,7 @@ kết quả và nhận ngay Voucher ưu đãi lên đến 100.000đ từ Anlene.
             star={{
                 color: '#ECD24A',
             }}
-            onConfirmNavigate={handleNavigate}
+            
         />
     );
 };
