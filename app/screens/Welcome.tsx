@@ -12,12 +12,7 @@ const WelcomeScreen = () => {
         router.push('/screens/Page_2');
     };
 
-    const navigation = useNavigation();
-    React.useLayoutEffect(() => {
-        navigation.setOptions({
-            headerShown: false,
-        });
-    }, [navigation]);
+    
 
     return (
         <LinearGradient

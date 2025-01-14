@@ -9,6 +9,9 @@ import ConfirmComponent from '../../components/ConfirmComponent';
 import PopupComponent from '../../components/PopupComponent';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useDispatch } from "react-redux";
+import { setWarningMessage } from "../../redux/features/warningSlice";
+
 interface Step {
     id: number;
     title: string;
@@ -28,6 +31,7 @@ const Page_2 = () => {
     const [isModalVisible, setModalVisible] = useState<boolean>(false);
     const navigation = useNavigation();
     const router = useRouter();
+    const dispatch = useDispatch();
     // Khi quay lại màn hình, reset lại trạng thái của các bước
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
@@ -108,6 +112,7 @@ const Page_2 = () => {
         return dynamicMessages[key];
     };
     const goToNext = () => {
+       
         closeModal();
 
         // Tìm các bước kiểm tra có trạng thái 'false'
@@ -127,6 +132,7 @@ const Page_2 = () => {
         // Hiển thị cảnh báo
         if (combinedWarningMessage) {
             console.log(combinedWarningMessage);
+            dispatch(setWarningMessage(combinedWarningMessage));
         }
 
 
@@ -186,12 +192,6 @@ const Page_2 = () => {
     const onGoHome = () => {
         router.push('/screens/Welcome');
     };
-
-    React.useLayoutEffect(() => {
-        navigation.setOptions({
-            headerShown: false,
-        });
-    }, [navigation]);
     // set sự kiện của popup 
     const handleConfirm = () => {
         setModalVisible(true);

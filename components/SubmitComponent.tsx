@@ -55,11 +55,6 @@ const SubmitComponent: React.FC<SubmitProps> = ({
     const onGoHome = () => {
         router.push('/screens/Welcome');
     };
-    React.useLayoutEffect(() => {
-        navigation.setOptions({
-            headerShown: false,
-        });
-    }, [navigation]);
     //quay lại màn hình trước
     const handleBack = () => {
         setIsModalVisible(true);
