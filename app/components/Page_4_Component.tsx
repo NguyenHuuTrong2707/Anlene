@@ -4,34 +4,34 @@ import Header from '../components/Header';
 import { router, useNavigation } from 'expo-router';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
- 
+
 
 interface Page_4Props {
     backgroundColor?: string,
-    txtTitle : string,
-    txtWarning: string, 
-    warningImage? : any,
+    txtTitle: string,
+    txtWarning: string,
+    warningImage?: any,
     txtRemind: string,
     imageProduct?: any,
-    colorTitleFooter? :object,
-    txtTitleColor? :object,
-    colorShowMore? :object,
+    colorTitleFooter?: object,
+    txtTitleColor?: object,
+    colorShowMore?: object,
     txtFooter: string,
     buttonText: string,
 }
 
 const Page_4_Component: React.FC<Page_4Props> = ({
-     backgroundColor,
-     txtTitle,
-     txtWarning,
-     warningImage,
-     txtRemind,
-     imageProduct,
-     colorTitleFooter,
-     txtFooter,
-     buttonText,
-     txtTitleColor,
-     colorShowMore,
+    backgroundColor,
+    txtTitle,
+    txtWarning,
+    warningImage,
+    txtRemind,
+    imageProduct,
+    colorTitleFooter,
+    txtFooter,
+    buttonText,
+    txtTitleColor,
+    colorShowMore,
 
 
 }) => {
@@ -43,6 +43,9 @@ const Page_4_Component: React.FC<Page_4Props> = ({
         router.push('/screens/Welcome');
     };
 
+    const goToNext = () => {
+        router.push('/screens/Page_5');
+    };
     // Set modal visibility when navigating back
     const handleBack = () => {
         navigation.goBack();
@@ -53,16 +56,16 @@ const Page_4_Component: React.FC<Page_4Props> = ({
         setShowMore(!showMore);
     };
     return (
-        <SafeAreaView style={[styles.container, {backgroundColor}]}>
+        <SafeAreaView style={[styles.container, { backgroundColor }]}>
+            <Header
+                title="Trang 4/6"
+                showBackButton={true}
+                logo={require('../../assets/images/home_fill.png')}
+                backgroundColor="transparent"
+                onBackPress={handleBack}
+                onGoHome={onGoHome}
+            />
             <ScrollView>
-                <Header
-                    title="Trang 4/6"
-                    showBackButton={true}
-                    logo={require('../../assets/images/home_fill.png')}
-                    backgroundColor="transparent"
-                    onBackPress={handleBack}
-                    onGoHome={onGoHome}
-                />
                 <View style={styles.titleContainer}>
                     {/* Logo */}
                     <Image source={require('../../assets/images/logoAnlene.png')} style={styles.logo} />
@@ -86,7 +89,7 @@ const Page_4_Component: React.FC<Page_4Props> = ({
                             <Text style={styles.txtFooter}>{txtFooter}</Text>
                             {!showMore && (
                                 <Text
-                                    style={[styles.txtFooter,colorShowMore, { textDecorationLine: 'underline' }]}
+                                    style={[styles.txtFooter, colorShowMore, { textDecorationLine: 'underline' }]}
                                     onPress={handleShowMore}
                                 >
                                     Xem thêm
@@ -94,7 +97,7 @@ const Page_4_Component: React.FC<Page_4Props> = ({
                             )}
                             {showMore && (
                                 <Text style={styles.txtShowMore}
-                                onPress={handleShowMore}
+                                    onPress={handleShowMore}
                                 >
                                     *Anlene 3 Khoẻ với công thức MovePro chứa các dưỡng chất Đạm, Canxi, Collagen cùng các Vitamin, Khoáng chất giúp
                                     Cơ-Xương-Khớp chắc khỏe và tăng sức đề kháng, cho bạn thoải mái vận động, tận hưởng cuộc sống.
@@ -103,7 +106,9 @@ const Page_4_Component: React.FC<Page_4Props> = ({
                         </View>
                     </View>
                 </View>
-                <TouchableOpacity style={[styles.button, showMore ? styles.buttonShifted : null]}>
+                <TouchableOpacity style={[styles.button, showMore ? styles.buttonShifted : null]}
+                    onPress={goToNext}
+                >
                     <Text style={styles.buttonText}>{buttonText}</Text>
                 </TouchableOpacity>
             </ScrollView>
@@ -179,6 +184,7 @@ const styles = StyleSheet.create({
         fontSize: 13,
         lineHeight: 18,
         textAlign: 'center',
+        paddingTop: 20,
     },
     footer: {
         flexDirection: 'column',
@@ -203,7 +209,7 @@ const styles = StyleSheet.create({
     },
     button: {
         width: 170,
-        height: 55,
+        height: 60,
         paddingVertical: 12,
         backgroundColor: '#B70002',
         borderRadius: 24,
@@ -220,7 +226,7 @@ const styles = StyleSheet.create({
         fontFamily: 'SVN-Gotham',
     },
     buttonShifted: {
-        marginTop: 40, 
+        marginTop: 40,
     },
 });
 

@@ -88,31 +88,73 @@ const Page_2 = () => {
         4: "Có vẻ bạn đang có hệ vận động tốt, tuy nhiên bạn cần quan tâm đến sức đề kháng hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
     };
     // Các cảnh báo tùy thuộc vào số lượng và loại bước không đạt
-    const dynamicMessages: { [key: string]: string } = {
-        "Cơ,Xương": "Có vẻ bạn đang có sức đề kháng tốt nhưng bạn cần quan tâm đến hệ cơ, xương nhiều hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-        "Cơ,Khớp": "Có vẻ bạn đang có sức khỏe xương tốt nhưng cần chú ý đến tình trạng cơ và khớp hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-        "Cơ,Đề kháng": "Tuy rằng bạn đang có hệ vận động tương đối ổn, nhưng bạn cần quan tâm đến sức đề kháng hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-        "Cơ,Xương,Khớp": "Có vẻ bạn đang có sức đề kháng tốt nhưng cần quan tâm đến hệ vận động hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-        "Cơ,Khớp,Đề kháng": "Có vẻ bạn đang có vấn đề về vận động và hệ miễn dịch bạn cần chú ý đến sức khỏe hơn nhé hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-        "Cơ,Xương,Đề kháng": "Có vẻ bạn đang có vấn đề về vận động và hệ miễn dịch bạn cần chú ý đến sức khỏe hơn nhé hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-        "Cơ,Xương,Khớp,Đề kháng": "Có vẻ sức khỏe của bạn đang gặp vấn đề, vui lòng chú ý đến sức khỏe hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-        "Xương,Khớp": "Có vẻ bạn đang có sức đề kháng tốt nhưng cần quan tâm đến hệ vận động hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-        "Xương,Đề kháng": "Tuy rằng bạn đang có hệ vận động tương đối ổn, nhưng bạn cần quan tâm đến sức đề kháng hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-        "Xương,Khớp,Đề kháng": "Có vẻ bạn đang có vấn đề về vận động và hệ miễn dịch bạn cần chú ý đến sức khỏe hơn nhé hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-        "Khớp,Đề kháng": "Tuy rằng bạn đang có hệ vận động tương đối ổn, nhưng bạn cần quan tâm đến sức đề kháng hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+    const dynamicMessages: { [key: string]: { message: string; url: string } } = {
+        "Cơ,Xương": {
+            message: "Có vẻ bạn đang có sức đề kháng tốt nhưng bạn cần quan tâm đến hệ cơ, xương nhiều hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+            url: 'https://www.lazada.vn/shop/error/invalidSellerStatus?path=promotion-30470-0.htm&hideShopNavigate=false&sellerKey=fonterra-official-store&hideHeadFoot=false&lang=en'
+        },
+        "Cơ,Khớp": {
+            message: "Có vẻ bạn đang có sức khỏe xương tốt nhưng cần chú ý đến tình trạng cơ và khớp hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+            url: ''
+        },
+        "Cơ,Đề kháng": {
+            message: "Tuy rằng bạn đang có hệ vận động tương đối ổn, nhưng bạn cần quan tâm đến sức đề kháng hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+            url: ''
+        },
+        "Cơ,Xương,Khớp": {
+            message: "Có vẻ bạn đang có sức đề kháng tốt nhưng cần quan tâm đến hệ vận động hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+            url: ''
+        },
+        "Cơ,Khớp,Đề kháng": {
+            message: "Có vẻ bạn đang có vấn đề về vận động và hệ miễn dịch bạn cần chú ý đến sức khỏe hơn nhé hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+            url: ''
+        },
+        "Cơ,Xương,Đề kháng": {
+            message: "Có vẻ bạn đang có vấn đề về vận động và hệ miễn dịch bạn cần chú ý đến sức khỏe hơn nhé hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+            url: ''
+        },
+        "Cơ,Xương,Khớp,Đề kháng": {
+            message: "Có vẻ sức khỏe của bạn đang gặp vấn đề, vui lòng chú ý đến sức khỏe hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+            url: ''
+        },
+        "Xương,Khớp": {
+            message: "Có vẻ bạn đang có sức đề kháng tốt nhưng cần quan tâm đến hệ vận động hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+            url: ''
+        },
+        "Xương,Đề kháng": {
+            message: "Tuy rằng bạn đang có hệ vận động tương đối ổn, nhưng bạn cần quan tâm đến sức đề kháng hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+            url: ''
+        },
+        "Xương,Khớp,Đề kháng": {
+            message: "Có vẻ bạn đang có vấn đề về vận động và hệ miễn dịch bạn cần chú ý đến sức khỏe hơn nhé hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+            url: ""
+        },
+        "Khớp,Đề kháng": {
+            message: "Tuy rằng bạn đang có hệ vận động tương đối ổn, nhưng bạn cần quan tâm đến sức đề kháng hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
+            url: ''
+        },
     };
-    const generateWarningMessage = (warnings: string[]): string => {
+    const generateWarningMessage = (warnings: string[]): { message: string; url: string } => {
         if (warnings.length === 1) {
             // Trả về thông báo đầy đủ nếu chỉ có một bước
             const singleWarning = warnings[0];
             const stepId = Object.keys(stepWarnings).find(key => stepWarnings[+key] === singleWarning);
-            return stepFullWarnings[+stepId!];
+            if (stepId) {
+                return {
+                    message: stepFullWarnings[+stepId],
+                    url: '', 
+                };
+            }
         }
         const key = warnings.join(",");
-        return dynamicMessages[key];
+        return dynamicMessages[key] || {
+            message: "Thông tin không xác định",
+            url: '',
+        };
     };
+    
     const goToNext = () => {
-       
+
         closeModal();
 
         // Tìm các bước kiểm tra có trạng thái 'false'
@@ -125,10 +167,10 @@ const Page_2 = () => {
                 warningMessages.push(stepWarnings[step.id]);
             }
         });
-    
+
         // Tạo thông báo kết hợp từ các bước không đạt
         const combinedWarningMessage = generateWarningMessage(warningMessages);
-    
+
         // Hiển thị cảnh báo
         if (combinedWarningMessage) {
             console.log(combinedWarningMessage);

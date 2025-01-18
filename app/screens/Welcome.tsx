@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     inforContainerGradient: {
         paddingHorizontal: 20,
         position: 'absolute',
-        bottom: 0,
+        bottom: -20,
         left: 0,
         right: 0,
         zIndex: 2,
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
         paddingVertical: 40,
         backgroundColor: 'transparent',
         position: 'absolute',
-        bottom: 70,
+        bottom: 60,
         paddingHorizontal: 50,
     },
     footerContainer: {
@@ -243,7 +243,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         fontStyle: 'italic',
         fontWeight: '400',
-        paddingVertical: 20,
     },
 });
 
