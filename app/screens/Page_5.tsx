@@ -14,6 +14,9 @@ const WelcomeScreen = () => {
     const goToNext = () => {
         router.push(url as any);
     };
+    const goLearnMore = () => {
+        router.push('/screens/Page_6');
+    };
     const onGoHome = () => {
         router.push('/screens/Welcome');
     };
@@ -79,7 +82,7 @@ const WelcomeScreen = () => {
                         <Text style={styles.buttonText}>MUA NGAY</Text>
                     </TouchableOpacity>
                     {/* Tim hieu ngay */}
-                    <TouchableOpacity style={styles.buttonMore} onPress={() => { }}>
+                    <TouchableOpacity style={styles.buttonMore} onPress={goLearnMore}>
                         <Text style={styles.buttonMoreText}>TÌM HIỂU NGAY</Text>
                     </TouchableOpacity>
                     {/* Info bar */}

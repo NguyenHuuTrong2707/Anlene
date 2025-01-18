@@ -2,7 +2,7 @@ import { ActivityIndicator} from "react-native";
 import { useFonts } from 'expo-font';
 import { useState } from 'react'; 
 import  Welcome  from '../app/screens/Welcome';
-import  Page_5  from '../app/screens/Page_5';
+import  Page_6  from '../app/screens/Page_6';
 
 
 export default function Index() {
