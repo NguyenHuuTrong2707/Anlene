@@ -91,7 +91,7 @@ const Page_2 = () => {
     const dynamicMessages: { [key: string]: { message: string; url: string } } = {
         "Cơ,Xương": {
             message: "Có vẻ bạn đang có sức đề kháng tốt nhưng bạn cần quan tâm đến hệ cơ, xương nhiều hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-            url: 'https://www.lazada.vn/shop/error/invalidSellerStatus?path=promotion-30470-0.htm&hideShopNavigate=false&sellerKey=fonterra-official-store&hideHeadFoot=false&lang=en'
+            url: 'https://bit.ly/4jokIXd'
         },
         "Cơ,Khớp": {
             message: "Có vẻ bạn đang có sức khỏe xương tốt nhưng cần chú ý đến tình trạng cơ và khớp hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
@@ -103,7 +103,7 @@ const Page_2 = () => {
         },
         "Cơ,Xương,Khớp": {
             message: "Có vẻ bạn đang có sức đề kháng tốt nhưng cần quan tâm đến hệ vận động hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-            url: ''
+            url: 'https://bit.ly/4hi26X5'
         },
         "Cơ,Khớp,Đề kháng": {
             message: "Có vẻ bạn đang có vấn đề về vận động và hệ miễn dịch bạn cần chú ý đến sức khỏe hơn nhé hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
