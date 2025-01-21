@@ -11,14 +11,55 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useDispatch } from "react-redux";
 import { setWarningMessage } from "../../redux/features/warningSlice";
-
+import { collection, getFirestore, onSnapshot } from 'firebase/firestore';
+import { app } from '../../firebase/firebase';
+import { generateWarningMessage, stepWarnings } from '../../hooks/warningMessage';
+interface PageData {
+    imgCo: string;
+    imgXuong: string;
+    imgKhop: string;
+    imgDeKhang: string;
+    contentCo: string;
+    contentXuong: string;
+    contentKhop: string;
+    contentDeKhang: string;
+}
+const db = getFirestore(app);
 interface Step {
     id: number;
     title: string;
     status: boolean | null;
 }
 
-const Page_2 = () => {
+const Page_2: React.FC = () => {
+    const [pageData, setPageData] = useState<PageData | null>(null);
+    useEffect(() => {
+        const unsubscribe = onSnapshot(collection(db, "Page_2"), (querySnapshot) => {
+            if (querySnapshot.empty) {
+                console.log("No documents found in 'Page_2' collection.");
+                return;
+            }
+
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                setPageData({
+                    imgCo: data.imgCo,
+                    imgXuong: data.imgXuong,
+                    imgKhop: data.imgKhop,
+                    imgDeKhang: data.imgDeKhang,
+                    contentCo: data.contentCo,
+                    contentXuong: data.contentXuong,
+                    contentKhop: data.contentKhop,
+                    contentDeKhang: data.contentDeKhang
+
+                });
+            });
+        },
+            (error) => {
+                console.log("Error fetching document:", error);
+            });
+        return () => unsubscribe();
+    }, []);
     const [steps, setSteps] = useState<Step[]>([
         { id: 1, title: 'Cơ', status: null },
         { id: 2, title: 'Xương', status: null },
@@ -53,106 +94,27 @@ const Page_2 = () => {
     const stepContent = [
         {
             title: 'KIỂM TRA CƠ',
-            image: require('../../assets/images/kiemtraco.png'),
-            instructions: 'Thẳng lưng trước ghế, đứng lên ngồi xuống 5 lần từ 6-10 giây.',
+            image: { uri: pageData?.imgCo },
+            instructions: pageData?.contentCo
         },
         {
             title: 'KIỂM TRA XƯƠNG',
-            image: require('../../assets/images/kiemtraxuong.png'),
-            instructions: 'Duỗi 2 tay về phía trước, từ từ cúi xuống để chạm vào mũi bàn chân',
+            image: { uri: pageData?.imgXuong },
+            instructions: pageData?.contentXuong
         },
         {
             title: 'KIỂM TRA KHỚP',
-            image: require('../../assets/images/kiemtrakhop.png'),
-            instructions: 'Đứng rộng chân, lưng thẳng đứng, tay đưa ra sau và đan vào nhau',
+            image: { uri: pageData?.imgKhop },
+            instructions: pageData?.contentKhop
         },
         {
             title: 'KIỂM TRA ĐỀ KHÁNG',
-            image: require('../../assets/images/kiemtradekhang.png'),
-            instructions: '6 tháng gần đây, bạn có gặp các triệu chứng: ho, sổ mũi, cảm sốt?',
+            image: { uri: pageData?.imgDeKhang },
+            instructions: pageData?.contentDeKhang
         },
     ];
     //Chuyển màn hình tiếp theo
-    //Kiểm tra các step falsefalse
-    const stepWarnings: { [key: number]: string } = {
-        1: "Cơ",
-        2: "Xương",
-        3: "Khớp",
-        4: "Đề kháng",
-    };
-
-    const stepFullWarnings: { [key: number]: string } = {
-        1: "Có vẻ bạn đang có đề kháng tốt và hệ vận động tương đối ổn, tuy nhiên bạn cần quan tâm đến hệ cơ hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-        2: "Có vẻ bạn đang có đề kháng tốt và hệ vận động tương đối ổn, tuy nhiên bạn cần quan tâm đến hệ xương hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-        3: "Có vẻ bạn đang có đề kháng tốt và hệ vận động tương đối ổn, tuy nhiên bạn cần quan tâm đến hệ khớp hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-        4: "Có vẻ bạn đang có hệ vận động tốt, tuy nhiên bạn cần quan tâm đến sức đề kháng hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-    };
-    // Các cảnh báo tùy thuộc vào số lượng và loại bước không đạt
-    const dynamicMessages: { [key: string]: { message: string; url: string } } = {
-        "Cơ,Xương": {
-            message: "Có vẻ bạn đang có sức đề kháng tốt nhưng bạn cần quan tâm đến hệ cơ, xương nhiều hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-            url: 'https://bit.ly/4jokIXd'
-        },
-        "Cơ,Khớp": {
-            message: "Có vẻ bạn đang có sức khỏe xương tốt nhưng cần chú ý đến tình trạng cơ và khớp hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-            url: ''
-        },
-        "Cơ,Đề kháng": {
-            message: "Tuy rằng bạn đang có hệ vận động tương đối ổn, nhưng bạn cần quan tâm đến sức đề kháng hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-            url: ''
-        },
-        "Cơ,Xương,Khớp": {
-            message: "Có vẻ bạn đang có sức đề kháng tốt nhưng cần quan tâm đến hệ vận động hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-            url: 'https://bit.ly/4hi26X5'
-        },
-        "Cơ,Khớp,Đề kháng": {
-            message: "Có vẻ bạn đang có vấn đề về vận động và hệ miễn dịch bạn cần chú ý đến sức khỏe hơn nhé hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-            url: ''
-        },
-        "Cơ,Xương,Đề kháng": {
-            message: "Có vẻ bạn đang có vấn đề về vận động và hệ miễn dịch bạn cần chú ý đến sức khỏe hơn nhé hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-            url: ''
-        },
-        "Cơ,Xương,Khớp,Đề kháng": {
-            message: "Có vẻ sức khỏe của bạn đang gặp vấn đề, vui lòng chú ý đến sức khỏe hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-            url: ''
-        },
-        "Xương,Khớp": {
-            message: "Có vẻ bạn đang có sức đề kháng tốt nhưng cần quan tâm đến hệ vận động hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-            url: ''
-        },
-        "Xương,Đề kháng": {
-            message: "Tuy rằng bạn đang có hệ vận động tương đối ổn, nhưng bạn cần quan tâm đến sức đề kháng hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-            url: ''
-        },
-        "Xương,Khớp,Đề kháng": {
-            message: "Có vẻ bạn đang có vấn đề về vận động và hệ miễn dịch bạn cần chú ý đến sức khỏe hơn nhé hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-            url: ""
-        },
-        "Khớp,Đề kháng": {
-            message: "Tuy rằng bạn đang có hệ vận động tương đối ổn, nhưng bạn cần quan tâm đến sức đề kháng hơn nhé, bởi vì sau 40 tuổi, sức khỏe Cơ-Xương-Khớp có thể bị suy giảm",
-            url: ''
-        },
-    };
-    const generateWarningMessage = (warnings: string[]): { message: string; url: string } => {
-        if (warnings.length === 1) {
-            // Trả về thông báo đầy đủ nếu chỉ có một bước
-            const singleWarning = warnings[0];
-            const stepId = Object.keys(stepWarnings).find(key => stepWarnings[+key] === singleWarning);
-            if (stepId) {
-                return {
-                    message: stepFullWarnings[+stepId],
-                    url: '', 
-                };
-            }
-        }
-        const key = warnings.join(",");
-        return dynamicMessages[key] || {
-            message: "Thông tin không xác định",
-            url: '',
-        };
-    };
-    
+   
     const goToNext = () => {
 
         closeModal();
@@ -230,10 +192,6 @@ const Page_2 = () => {
             navigation.goBack();
         }
     };
-
-    const onGoHome = () => {
-        router.push('/screens/Welcome');
-    };
     // set sự kiện của popup 
     const handleConfirm = () => {
         setModalVisible(true);
@@ -261,7 +219,6 @@ const Page_2 = () => {
                     logo={require('../../assets/images/home_fill.png')}
                     backgroundColor="transparent"
                     onBackPress={handleBack}
-                    onGoHome={onGoHome}
                 />
                 <View >
                     <Text style={styles.titleHeader}>KIỂM TRA CƠ - XƯƠNG - KHỚP</Text>

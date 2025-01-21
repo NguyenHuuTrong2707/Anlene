@@ -1,18 +1,60 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView, ImageBackground } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import Header from '../components/Header';
 import { useRouter } from 'expo-router';
-import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
-
+import { collection, getFirestore, onSnapshot } from 'firebase/firestore';
+import { app } from '../../firebase/firebase';
+interface PageData {
+    title1: string;
+    title2: string;
+    title3: string;
+    img1: string;
+    img2: string;
+    img3: string;
+    img4: string;
+    content: string;
+    footer1: string;
+    footer2: string;
+}
+const db = getFirestore(app);
 const WelcomeScreen = () => {
     const router = useRouter();
+    const [pageData, setPageData] = useState<PageData | null>(null);
+    useEffect(() => {
+        const unsubscribe = onSnapshot(collection(db, " Page_1"), (querySnapshot) => {
+            if (querySnapshot.empty) {
+                console.log("No documents found in 'Page_1' collection.");
+                return;
+            }
+
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                setPageData({
+                    title1: data.title1,
+                    title2: data.title2,
+                    title3: data.title3,
+                    img1: data.img1,
+                    img2: data.img2,
+                    img3: data.img3,
+                    img4: data.img4,
+                    content: data.content,
+                    footer1: data.footer1,
+                    footer2: data.footer2,
+                });
+            });
+        },
+            (error) => {
+                console.log("Error fetching document:", error);
+            });
+        return () => unsubscribe();
+    }, []);
 
     const goToTest1 = () => {
         router.push('/screens/Page_2');
     };
 
-    
+
 
     return (
         <LinearGradient
@@ -30,19 +72,20 @@ const WelcomeScreen = () => {
                 />
 
                 <View style={styles.overlayContainer}>
-                    <Image source={require('../../assets/images/banner.png')} style={styles.imageBanner} />
+                    <Image source={{ uri: pageData?.img1 }} style={styles.imageBanner} />
                     {/* Title and Subtitle */}
                     <LinearGradient
                         colors={['#13500E', '#1F660D', '#20680DE5', '#236E0DD9', '#27750DB2', '#2E820D00']}
                         style={styles.titleContainer}
                     >
-                        <Text style={styles.title}>
-                            TẾT BẬN RỘN{'\n'}CƠ-XƯƠNG-KHỚP CÓ KHỎE{'\n'}ĐỂ CHU TOÀN?
+                        <Text style={styles.title}
+                        >
+                            {pageData?.title1}  {'\n'}{pageData?.title2}{'\n'}{pageData?.title3}
                         </Text>
 
 
                         <Text style={styles.subtitle}>
-                            Trăm công nghìn việc dịp cận Tết mà cơ thể nhức mỏi, làm sao chu toàn?
+                            {pageData?.content}
                             {'\n'}Ngay lúc này, hãy{' '}
                             <Text style={styles.highlight}>
                                 Kiểm tra Sức khoẻ Cơ-Xương-Khớp
@@ -65,18 +108,18 @@ const WelcomeScreen = () => {
                         >
                             <View style={styles.infoBar}
                             >
-                               <Image source={require('../../assets/images/wfree.png')} style={styles.infoItem} />
-                               <Image source={require('../../assets/images/w5.png')} style={styles.infoItem} />
-                               <Image source={require('../../assets/images/wvoucher.png')} style={styles.infoItem} />
-                            
+                                <Image source={{ uri: pageData?.img2 }} style={styles.infoItem} />
+                                <Image source={{ uri: pageData?.img4 }} style={styles.infoItem} />
+                                <Image source={{ uri: pageData?.img3 }} style={styles.infoItem} />
+
                             </View>
                             {/* Footer */}
                             <View style={styles.footerContainer}>
                                 <Text style={styles.footer}>
-                                    Bài kiểm tra Cơ, Xương, Khớp này được phát triển bởi đội ngũ Anlene
+                                    {pageData?.footer1}
                                 </Text>
                                 <Text style={styles.footerSecond}>
-                                    Lưu ý: Bài kiểm tra không dành cho đối tượng đang bị chấn thương hoặc có bệnh lý về cơ, xương, khớp hoặc tiểu đường
+                                    {pageData?.footer2}
                                 </Text>
                             </View>
                         </View>
@@ -94,20 +137,6 @@ const styles = StyleSheet.create({
     gradientBackground: {
         flex: 1,
     },
-    checkmark: {
-        position: 'absolute',
-        top: 30,
-        left: 50,
-        width: 20,
-        height: 15,
-        borderRadius: 1,
-    },
-    imageBackground: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: 40,
-    },
     overlayContainer: {
         position: 'relative',
         flex: 1,
@@ -115,26 +144,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     inforContainerGradient: {
-        paddingHorizontal: 20,
+        flex: 1,
         position: 'absolute',
         bottom: -20,
         left: 0,
         right: 0,
-        zIndex: 2,
         height: '30%',
-        justifyContent: 'flex-end',
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        overflow: 'hidden',
     },
     inforContainer: {
         flex: 1,
         justifyContent: 'flex-end',
-    },
-    textContainer: {
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
     },
     titleContainer: {
         paddingHorizontal: 25,
@@ -181,7 +200,7 @@ const styles = StyleSheet.create({
         zIndex: 3,
         backgroundColor: '#B70002',
         height: 46,
-        justifyContent:'center',
+        justifyContent: 'center',
         borderRadius: 30,
         width: 230,
         borderColor: '#E1D770',
@@ -202,31 +221,20 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    infotextContainer: {
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    infoText: {
-        color: '#478449',
-        fontSize: 13,
-        fontWeight: 700,
-        textAlign: 'center',
-    },
     infoBar: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        justifyContent: 'center',
         width: '100%',
-        paddingVertical: 40,
         backgroundColor: 'transparent',
         position: 'absolute',
-        bottom: 60,
+        top: 60,
         paddingHorizontal: 50,
     },
     footerContainer: {
         flexDirection: 'column',
-        justifyContent: 'space-between',
         alignItems: 'center',
+        position: 'absolute',
+        top: 150,
     },
     footer: {
         color: '#FFF',

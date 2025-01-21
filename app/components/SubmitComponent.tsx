@@ -6,7 +6,7 @@ import Header from '../components/Header';
 import ConfirmComponent from '../components/ConfirmComponent';
 import PopupComponent from '../components/PopupComponent';
 
-import { getFirestore, addDoc, collection } from 'firebase/firestore';
+import { getFirestore, addDoc, collection, onSnapshot } from 'firebase/firestore';
 import { app } from '../../firebase/firebase';
 
 const db = getFirestore(app);
@@ -16,7 +16,7 @@ interface SubmitProps {
     textRed: string
     textTitle: string
     textDic: string
-    textInfo: string
+    textInfo?: string
     logoSource: any
     titlecolor?: object
     textcolor?: object
@@ -36,7 +36,6 @@ const SubmitComponent: React.FC<SubmitProps> = ({
     errortext,
     star,
     onConfirmNavigate
-
 }) => {
     const navigation = useNavigation();
     const [checked, setChecked] = useState(false);
@@ -49,12 +48,6 @@ const SubmitComponent: React.FC<SubmitProps> = ({
     const [isValidForm, setIsValidForm] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
-
-
-    // Thực hiện quay về màn hình chính
-    const onGoHome = () => {
-        router.push('/screens/Welcome');
-    };
     //quay lại màn hình trước
     const handleBack = () => {
         setIsModalVisible(true);
@@ -144,7 +137,7 @@ const SubmitComponent: React.FC<SubmitProps> = ({
                     logo={require('../../assets/images/home_fill.png')}
                     backgroundColor="transparent"
                     onBackPress={handleBack}
-                    onGoHome={onGoHome}
+                 
                 />
                 <View style={styles.titleContainer}>
                     <Image source={logoSource} style={styles.logo} />

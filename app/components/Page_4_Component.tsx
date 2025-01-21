@@ -1,22 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../components/Header';
 import { router, useNavigation } from 'expo-router';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-
-
-
+import usePageData_Page4 from '../../hooks/usePagaData_Page4';
 interface Page_4Props {
     backgroundColor?: string,
     txtTitle: string,
     txtWarning: string,
     warningImage?: any,
-    txtRemind: string,
+    txtRemind?: string,
     imageProduct?: any,
     colorTitleFooter?: object,
     txtTitleColor?: object,
     colorShowMore?: object,
-    txtFooter: string,
+    txtFooter?: string,
     buttonText: string,
 }
 
@@ -35,18 +33,15 @@ const Page_4_Component: React.FC<Page_4Props> = ({
 
 
 }) => {
-    // Correctly placing the useState inside the functional component
+
+    const pageData = usePageData_Page4('Page_4');
     const navigation = useNavigation();
     const [showMore, setShowMore] = useState(false);
 
-    const onGoHome = () => {
-        router.push('/screens/Welcome');
-    };
 
     const goToNext = () => {
         router.push('/screens/Page_5');
     };
-    // Set modal visibility when navigating back
     const handleBack = () => {
         navigation.goBack();
     };
@@ -63,7 +58,6 @@ const Page_4_Component: React.FC<Page_4Props> = ({
                 logo={require('../../assets/images/home_fill.png')}
                 backgroundColor="transparent"
                 onBackPress={handleBack}
-                onGoHome={onGoHome}
             />
             <ScrollView>
                 <View style={styles.titleContainer}>
@@ -84,7 +78,7 @@ const Page_4_Component: React.FC<Page_4Props> = ({
                             <Text style={styles.txtNote}>*Mỗi 10 năm. Nguồn: Daly et al., 2013. BMC Geriatrics 13:71</Text>
                             <Text style={styles.txtNote}>**Mỗi 5-7 năm sau khi mãn kinh. Nguồn: National Osteoporosis Foundation (2009). Hormones and Healthy Bones</Text>
                         </View>
-                        <Text style={[styles.titleFooter, colorTitleFooter]}>LỰA CHỌN GIÚP CƠ-XƯƠNG-KHỚP CHẮC KHOẺ</Text>
+                        <Text style={[styles.titleFooter, colorTitleFooter]}>{pageData?.content1}</Text>
                         <View style={styles.footer}>
                             <Text style={styles.txtFooter}>{txtFooter}</Text>
                             {!showMore && (
@@ -99,8 +93,7 @@ const Page_4_Component: React.FC<Page_4Props> = ({
                                 <Text style={styles.txtShowMore}
                                     onPress={handleShowMore}
                                 >
-                                    *Anlene 3 Khoẻ với công thức MovePro chứa các dưỡng chất Đạm, Canxi, Collagen cùng các Vitamin, Khoáng chất giúp
-                                    Cơ-Xương-Khớp chắc khỏe và tăng sức đề kháng, cho bạn thoải mái vận động, tận hưởng cuộc sống.
+                                    {pageData?.contentShowMore}
                                 </Text>
                             )}
                         </View>
@@ -217,7 +210,7 @@ const styles = StyleSheet.create({
         borderColor: '#ECD24A',
         alignItems: 'center',
         alignSelf: 'center',
-        marginTop : 10,
+        marginTop: 10,
     },
     buttonText: {
         color: '#FFF',

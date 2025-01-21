@@ -3,8 +3,10 @@ import Page_4_Component from '../components/Page_4_Component';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { LinearGradient } from 'expo-linear-gradient';
-const Page_4_Congra = () => {
+import usePageData_Page4 from '../../hooks/usePagaData_Page4';
+const Page_4_Congra: React.FC = () => {
     const warningMessage = useSelector((state: RootState) => state.warning.message);
+    const pageData = usePageData_Page4('Page_4');
     return (
         <LinearGradient
             colors={['#0E470E', '#20680D', '#2E820D', '#13500E']}
@@ -14,13 +16,11 @@ const Page_4_Congra = () => {
                 txtTitle='XIN CHÚC MỪNG!'
                 txtTitleColor={{ color: '#E8E276' }}
                 txtWarning={warningMessage}
-                warningImage={require('../../assets/images/imagewarning.png')}
-                txtRemind='Bạn có thể sẽ phải đối mặt với những cơn đau nhức mỏi thường xuyên, gây khó khăn trong vận động và sinh hoạt hằng ngày.'
-                imageProduct={require('../../assets/images/imageproduct.png')}
+                warningImage={{uri : pageData?.imgWarning}}
+                txtRemind={pageData?.contentGreen}
+                imageProduct={{uri : pageData?.imgProduct2}}
                 colorTitleFooter={{ color: "#ECD24A" }}
-                txtFooter='Cùng Anlene giúp bạn chăm sóc sức khoẻ
-                   Cơ-Xương-Khớp ngay hôm nay với Ưu đãi hấp dẫn
-                   đang chờ bạn!'
+                txtFooter={pageData?.footerGreen}
                 buttonText='Mua ngay'
                 colorShowMore={{ color: '#ECD24A' }}
             />

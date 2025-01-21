@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
@@ -7,8 +8,8 @@ interface HeaderProps {
     showBackButton?: boolean;
     logo?: any;
     iconStyle?: object;
-    backgroundColor?: string; // Thêm thuộc tính màu nền
-    onGoHome?: () => void;
+    backgroundColor?: string;
+    
 
 }
 
@@ -19,8 +20,10 @@ const Header: React.FC<HeaderProps> = ({
     logo,
     iconStyle,
     backgroundColor = '#004d00',
-    onGoHome,
 }) => {
+    const onGoHome = () => {
+        router.push('/screens/Welcome');
+    }
     return (
         <View style={[styles.header, { backgroundColor }]}>
             {/* Nút back hoặc placeholder */}

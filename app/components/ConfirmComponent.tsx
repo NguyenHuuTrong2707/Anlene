@@ -10,7 +10,7 @@ interface ConfirmComponentProps {
     onConfirmNavigate?: () => void;
 }
 
-const ConfirmComponent: React.FC<ConfirmComponentProps> = ({ title, onPress, disabled, style, textStyle,onConfirmNavigate }) => {
+const ConfirmComponent: React.FC<ConfirmComponentProps> = ({ title, onPress, disabled, style, textStyle }) => {
     const handlePress = () => {
         onPress();
         

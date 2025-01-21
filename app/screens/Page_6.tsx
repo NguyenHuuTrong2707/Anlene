@@ -1,15 +1,48 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Image, View, Text } from 'react-native';
 import Header from '../components/Header';
 import { useNavigation, useRouter } from 'expo-router';
-const Page_6 = () => {
-    const router = useRouter();
+import { collection, getFirestore, onSnapshot } from 'firebase/firestore';
+import { app } from '../../firebase/firebase';
+interface PageData {
+    title: string
+    imgProduct: string
+    imgCo: string
+    imgXuong: string
+    imgKhop: string
+    content: string
+   
+}
+const db = getFirestore(app)
+const Page_6: React.FC = () => {
+    //lay du lieu tu firebase 
+    const [pageData, setPageData] = useState<PageData | null>(null);
+        useEffect(() => {
+            const unsubscribe = onSnapshot(collection(db, "Page_6"), (querySnapshot) => {
+                if (querySnapshot.empty) {
+                    console.log("No documents found in 'Page_6' collection.");
+                    return;
+                }
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    setPageData({
+                        title: data.title,
+                        imgProduct: data.imgProduct,
+                        imgCo: data.imgCo,
+                        imgXuong: data.imgXuong,
+                        imgKhop: data.imgKhop,
+                        content: data.content
+                    });
+                });
+            },
+                (error) => {
+                    console.log("Error fetching document:", error);
+                });
+            return () => unsubscribe();
+        }, []);
     const navigation = useNavigation();
-    const onGoHome = () => {
-        router.push('/screens/Welcome');
-    };
-    const handleBack = () => {
+    const handleBack: () => void = () => {
         navigation.goBack();
     };
     return (
@@ -23,7 +56,6 @@ const Page_6 = () => {
                     logo={require('../../assets/images/home_fill.png')}
                     backgroundColor="transparent"
                     onBackPress={handleBack}
-                    onGoHome={onGoHome}
                 />
                 <ScrollView>
                     <View style={styles.overlayContainer}>
@@ -32,18 +64,17 @@ const Page_6 = () => {
                         {/* Title */}
                         <View style={styles.titleContainer}>
                             <Text style={styles.titleOne}>THÔNG TIN SẢN PHẨM</Text>
-                            <Text style={styles.titleTwo}>SỬA ANLENE 3 KHỎE</Text>
+                            <Text style={styles.titleTwo}>{pageData?.title}</Text>
                         </View>
                         {/* Product */}
                         <View style={styles.imageProductContainer}>
-                            <Image source={require('../../assets/images/imageProduct_page6.png')}
+                            <Image source={{uri : pageData?.imgProduct}}
                                 style={styles.imageProduct}
                             />
                         </View>
                         {/* Content */}
                         <View style={styles.contentContainer}>
-                            <Text style={styles.content}>Uống 2 ly Anlene mỗi ngày để bổ sung dinh dưỡng, tăng cường đề kháng đồng thời duy trì thói quen tập thể dục mỗi ngày để giúp hệ Cơ-Xương-Khớp chắc khoẻ, thoải mái tận hưởng cuộc sống năng động, chẳng ngại
-                                “rào cản” tuổi tác.</Text>
+                            <Text style={styles.content}>{pageData?.content}</Text>
                         </View>
                         {/* Card */}
                         <View style={styles.cardContainer}>
@@ -53,7 +84,7 @@ const Page_6 = () => {
                                 <LinearGradient
                                     colors={['#73A442', '#478449']}
                                     style={styles.card}>
-                                    <Image source={require('../../assets/images/cxCoXuong.png')}
+                                    <Image source={{uri : pageData?.imgXuong}}
                                         style={styles.imageCard}
                                     />
                                 </LinearGradient>
@@ -64,7 +95,7 @@ const Page_6 = () => {
                                 <LinearGradient
                                     colors={['#73A442', '#478449']}
                                     style={styles.card}>
-                                    <Image source={require('../../assets/images/cxCo.png')}
+                                    <Image source={{uri : pageData?.imgCo}}
                                         style={styles.imageCard}
                                     />
                                 </LinearGradient>
@@ -75,7 +106,7 @@ const Page_6 = () => {
                                 <LinearGradient
                                     colors={['#73A442', '#478449']}
                                     style={styles.card}>
-                                    <Image source={require('../../assets/images/cxKhop.png')}
+                                    <Image source={{uri : pageData?.imgKhop}}
                                         style={styles.imageCard}
                                     />
                                 </LinearGradient>

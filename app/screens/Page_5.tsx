@@ -1,11 +1,53 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView, ImageBackground, LogBox } from 'react-native';
 import Header from '../components/Header';
 import { useNavigation, useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-const WelcomeScreen = () => {
+import { collection, getFirestore, onSnapshot } from 'firebase/firestore';
+import { app } from '../../firebase/firebase';
+interface PageData {
+    content1: string
+    content2: string
+    imgBanner: string
+    title1: string
+    title2: string
+    logoShop: string
+    maGiamGia: string
+    footer1: string
+    footer2: string
+}
+const db = getFirestore(app);
+const WelcomeScreen: React.FC = () => {
+    //lay du lieu tu firebase
+    const [pageData, setPageData] = useState<PageData | null>(null);
+    useEffect(() => {
+        const unsubscribe = onSnapshot(collection(db, "Page_5"), (querySnapshot) => {
+            if (querySnapshot.empty) {
+                console.log("No documents found in 'Page_5' collection.");
+                return;
+            }
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                setPageData({
+                    content1: data.content1,
+                    content2: data.content2,
+                    imgBanner: data.imgBanner,
+                    title1: data.title1,
+                    title2: data.title2,
+                    logoShop: data.logoShop,
+                    maGiamGia: data.maGiamGia,
+                    footer1: data.footer1,
+                    footer2: data.footer2,
+                });
+            });
+        },
+            (error) => {
+                console.log("Error fetching document:", error);
+            });
+        return () => unsubscribe();
+    }, []);
     const router = useRouter();
 
     const navigation = useNavigation();
@@ -16,9 +58,6 @@ const WelcomeScreen = () => {
     };
     const goLearnMore = () => {
         router.push('/screens/Page_6');
-    };
-    const onGoHome = () => {
-        router.push('/screens/Welcome');
     };
     const handleBack = () => {
         navigation.goBack();
@@ -36,14 +75,14 @@ const WelcomeScreen = () => {
                     logo={require('../../assets/images/home_fill.png')}
                     backgroundColor="transparent"
                     onBackPress={handleBack}
-                    onGoHome={onGoHome}
+                   
                 />
 
                 <View style={styles.overlayContainer}>
                     {/* Logo */}
                     <Image source={require('../../assets/images/logoAnlene.png')} style={styles.logo} />
 
-                    <Image source={require('../../assets/images/AnleneCoffee.png')} style={styles.imageBanner} />
+                    <Image source={{uri : pageData?.imgBanner}} style={styles.imageBanner} />
                     {/* Title and Subtitle */}
                     <LinearGradient
                         colors={['#13500E', '#1F660D', '#20680DE5', '#236E0DD9', '#27750DB2', '#2E820D00']}
@@ -51,27 +90,27 @@ const WelcomeScreen = () => {
                     >
                         <View style={styles.titleGroup}>
                             <Text style={styles.title}>
-                                CHĂM SÓC CƠ-XƯƠNG-KHỚP
+                               {pageData?.title1}
                             </Text>
                             <Text style={styles.title2}>
-                                NHẬN LỘC SỨC KHỎE TỪ ANLENE
+                                {pageData?.title2}
                             </Text>
                         </View>
                         <Text style={styles.subtitle}>
-                            <Text style={styles.subtitle1}>ANLENE LÌ XÌ NGAY 100.000đ KHI ĐẶT MUA HÔM NAY!</Text>
-                            <Text style={styles.subtitle2}>Hạn sử dụng: 25/07/2021 - 31/07/2021</Text>
+                            <Text style={styles.subtitle1}>{pageData?.content1}</Text>
+                            <Text style={styles.subtitle2}>{pageData?.content2}</Text>
                         </Text>
                     </LinearGradient>
                     {/* Card */}
                     <View style={styles.cardContainer}>
                         <View style={styles.card}>
                             <Text style={styles.smallText}>MÃ GIẢM GIÁ</Text>
-                            <Text style={styles.largeText}>ANLENANMUMW88</Text>
+                            <Text style={styles.largeText}>{pageData?.maGiamGia}</Text>
                         </View>
                         <View style={styles.row}>
                             <Text style={styles.yellowText}>ÁP DỤNG TẠI</Text>
                             <Image
-                                source={require('../../assets/images/LogoLazada.png')}
+                                source={{uri : pageData?.logoShop}}
                                 style={styles.logoLaz}
                             />
 
@@ -96,10 +135,10 @@ const WelcomeScreen = () => {
                             {/* Footer */}
                             <View style={styles.footerContainer}>
                                 <Text style={styles.footer}>
-                                    * Voucher chỉ áp dụng cho đơn hàng mua các sản phẩm Anlene Gold 3X, Anlene Gold 5X tại gian hàng Fonterra Official Retail Store trên Lazada
+                                    {pageData?.footer1}
                                 </Text>
                                 <Text style={styles.footerSecond}>
-                                    * Voucher chỉ áp dụng cho đơn hàng có giá trị từ 200.000đ
+                                   {pageData?.footer2}
                                 </Text>
                             </View>
                         </View>
@@ -142,17 +181,13 @@ const styles = StyleSheet.create({
         zIndex: 2,
     },
     inforContainerGradient: {
-        paddingHorizontal: 20,
+        flex: 1,
         position: 'absolute',
         bottom: -20,
         left: 0,
         right: 0,
-        zIndex: 2,
         height: '30%',
-        justifyContent: 'flex-end',
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        overflow: 'hidden',
+        paddingHorizontal: 20,
     },
     inforContainer: {
         flex: 1,
@@ -337,9 +372,11 @@ const styles = StyleSheet.create({
     },
     footerContainer: {
         flexDirection: 'column',
-        justifyContent: 'space-between',
         alignItems: 'center',
-        paddingBottom: 20,
+        position: 'absolute',
+        top: 165,
+        right: 0,
+        left: 0,
     },
     footer: {
         color: '#FFF',

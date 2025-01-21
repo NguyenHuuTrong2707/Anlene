@@ -3,8 +3,12 @@ import SubmitComponent from '../components/SubmitComponent';
 import { useRouter } from 'expo-router';
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import usePageData_Page3 from '../../hooks/usePageDate_Page3';
+
+
 const SubmitCareful = () => {
     const warningMessage = useSelector((state: RootState) => state.warning.message);
+    const pageData = usePageData_Page3('Page_3')
     //thuc hien cat chuoi phía sau từ nhé..
     const truncateAfterNhe = (str: string) => {
         const nheIndex = str.toLowerCase().indexOf("nhé");
@@ -23,8 +27,7 @@ const SubmitCareful = () => {
             textRed="HOÀN THÀNH BÀI KIỂM TRA"
             textTitle="LƯU Ý MỘT CHÚT!"
             textDic={truncatedWarningMessage}
-            textInfo="Điền thông tin bên dưới để xem đầy đủ
-kết quả và nhận ngay Voucher ưu đãi lên đến 100.000đ từ Anlene."
+            textInfo={pageData?.content}
             textcolor={{
                 color: '#DF1E13',
             }}
